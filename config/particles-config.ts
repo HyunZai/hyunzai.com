@@ -74,7 +74,7 @@ export const particlesOptions: ISourceOptions = {
     },
     // 파티클의 불투명도
     opacity: {
-      value: { min: 0.1, max: 0.4 }, // 👈 은은하게 보이도록 불투명도 낮춤
+      value: { min: 0.1, max: 0.4 },
     },
     // 파티클 모양
     shape: {
