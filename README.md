@@ -34,3 +34,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## MEMO
+포인트 색상: #03C3FF
+배경 색상: #1C1C22
+
+전체적인 레이아웃이나 디자인을 주로 참고할 사이트: https://pulkitgpt.tech/
+LLM 챗봇 구현한 사이트: https://kartavya-singh.com/
