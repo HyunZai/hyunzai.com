@@ -24,7 +24,7 @@ export default function HomePage() {
             }
             hoverContent={
               <>
-                I'm a <span className="text-[#03C3FF]">Full Stack Web Developer</span>.
+                I&apos;m a <span className="text-[#03C3FF]">Full Stack Web Developer</span>.
               </>
             }
           />
