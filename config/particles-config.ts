@@ -3,15 +3,12 @@
 import type { ISourceOptions } from "@tsparticles/engine";
 
 export const particlesOptions: ISourceOptions = {
-  // 캔버스 배경 설정
   background: {
     color: {
-      value: "#000000", // 배경은 완전한 검은색
+      value: "#1C1C22",
     },
   },
   fpsLimit: 120,
-
-  // 사용자 상호 작용 (마우스) 관련 설정
   interactivity: {
     events: {
       onClick: {
@@ -20,39 +17,43 @@ export const particlesOptions: ISourceOptions = {
       },
       onHover: {
         enable: true,
-        mode: "connect", // 👈 핵심: 마우스 주변 파티클을 연결하는 'connect' 모드 사용
+        mode: "bubble",
       },
     },
     modes: {
       push: {
         quantity: 4,
       },
-      // 'connect' 모드 설정
-      connect: {
-        distance: 500, // 👈 마우스 주변 100px 이내의 파티클만 연결
-        links: {
-          opacity: 0.5, // 연결선 불투명도
-        },
-      },
-      repulse: {
-        distance: 200, // 사용하지 않으므로 비활성화해도 무방
-        duration: 0.4,
+      // 'bubble' 모드: 더 넓은 범위에서 파티클 보이게 하기
+      bubble: {
+        distance: 800,
+        opacity: 0.6,
+        size: 3,
       },
     },
   },
 
   // 개별 파티클의 움직임 및 외형 설정
+
   particles: {
     color: {
-      value: "#88CCFF", // 밝은 하늘색
+      // 9:1 비율로 하늘색(#88CCFF)과 빨간색(#FF5555)을 섞어 10% 확률로 빨간 점 등장
+      value: [
+        "#88CCFF",
+        "#88CCFF",
+        "#88CCFF",
+        "#88CCFF",
+        "#88CCFF",
+        "#88CCFF",
+        "#88CCFF",
+        "#88CCFF",
+        "#88CCFF",
+        "#FF5555",
+      ],
     },
-    // 파티클 간의 연결선 (링크) 설정: 전역적으로 비활성화
+    // 파티클 간의 연결선 (전역): 완전 비활성화
     links: {
       enable: false,
-      color: "#88CCFF",
-      distance: 300, // 👈 마우스 connect distance(250)보다 크거나 같게 설정
-      opacity: 0.5,
-      width: 1,
     },
     // 이동 설정
     move: {
@@ -62,7 +63,7 @@ export const particlesOptions: ISourceOptions = {
         default: "bounce",
       },
       random: true,
-      speed: 1, // 👈 느리고 은은하게 움직이도록 속도를 낮춤
+      speed: 1,
       straight: false,
     },
     // 파티클 개수 및 밀도
@@ -70,19 +71,19 @@ export const particlesOptions: ISourceOptions = {
       density: {
         enable: true,
       },
-      value: 200, // 촘촘함을 유지
+      value: 300,
     },
     // 파티클의 불투명도
     opacity: {
-      value: { min: 0.1, max: 0.4 },
+      value: 0,
     },
     // 파티클 모양
     shape: {
-      type: "circle", // 원으로 회귀하여 깔끔함을 유지
+      type: "circle",
     },
     // 파티클 크기
     size: {
-      value: { min: 1, max: 2 }, // 작고 섬세한 느낌
+      value: { min: 1, max: 2 },
     },
   },
 
