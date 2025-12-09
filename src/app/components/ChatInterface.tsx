@@ -31,7 +31,7 @@ const ChatInterface = () => {
                 <input
                     type="text"
                     placeholder="Ask me anything..."
-                    className="w-full px-20 py-4 text-white bg-white/10 backdrop-blur-md rounded-full border border-white/20 focus:outline-none focus:border-white/50 focus:bg-white/20 transition-all placeholder-white/50 select-text text-base md:text-lg"
+                    className="w-full px-20 py-4 text-white bg-white/10 backdrop-blur-md rounded-full opacity-80 border border-white/20 focus:outline-none focus:border-[#03C3FF] focus:bg-white/20 transition-all placeholder-white/50 select-text text-base md:text-lg"
                 />
 
                 {/* Left: Maximize Button */}
