@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { User } from "./User";
 
 @Entity()
 export class Project {
@@ -17,7 +16,4 @@ export class Project {
 
     @Column({ nullable: true })
     link!: string;
-
-    @ManyToOne(() => User, (user) => user.projects)
-    user!: User;
 }

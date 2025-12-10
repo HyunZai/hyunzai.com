@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { User } from "./User";
 
 @Entity()
 export class PersonalInfo {
@@ -11,7 +10,4 @@ export class PersonalInfo {
 
     @Column("text")
     content!: string;
-
-    @ManyToOne(() => User, (user) => user.personalInfos)
-    user!: User;
 }

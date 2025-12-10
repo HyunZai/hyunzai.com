@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { User } from "./User";
 
 @Entity()
 export class Career {
@@ -20,7 +19,4 @@ export class Career {
 
     @Column("text")
     description!: string;
-
-    @ManyToOne(() => User, (user) => user.careers)
-    user!: User;
 }
