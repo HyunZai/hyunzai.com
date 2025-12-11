@@ -4,7 +4,7 @@ import { TypeAnimation } from "react-type-animation";
 
 const TypingIntro = () => {
     return (
-        <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 h-[1.2em] inline-block text-left min-w-[24ch]">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 h-[1.2em] inline-block text-left min-w-[24ch]">
             <TypeAnimation
                 sequence={[
                     "안녕하세요, 김현재입니다.", // 한국어 출력

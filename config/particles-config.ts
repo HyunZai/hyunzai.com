@@ -3,6 +3,9 @@
 import type { ISourceOptions } from "@tsparticles/engine";
 
 export const particlesOptions: ISourceOptions = {
+  fullScreen: {
+    enable: false, //인트로 화면에서만 사용
+  },
   background: {
     color: {
       value: "#1C1C22",

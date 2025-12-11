@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FiMaximize2, FiSend, FiX } from "react-icons/fi";
+import { FiMaximize2, FiSend } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ChatInterface = () => {
@@ -27,11 +27,11 @@ const ChatInterface = () => {
     return (
         <>
             {/* Main Page Input Area */}
-            <div className="mt-10 relative w-full">
+            <div className="mt-8 relative w-full">
                 <input
                     type="text"
                     placeholder="Ask me anything..."
-                    className="w-full px-20 py-4 text-white bg-white/10 backdrop-blur-md rounded-full opacity-80 border border-white/20 focus:outline-none focus:border-[#03C3FF] focus:bg-white/20 transition-all placeholder-white/50 select-text text-base md:text-lg"
+                    className="w-full px-16 py-3 text-white bg-white/10 backdrop-blur-md rounded-full opacity-80 border border-white/20 focus:outline-none focus:border-foreground focus:bg-white/20 transition-all placeholder-white/50 select-text text-sm md:text-base"
                 />
 
                 {/* Left: Maximize Button */}
@@ -64,7 +64,7 @@ const ChatInterface = () => {
                     >
                         {/* Modal Container */}
                         <motion.div
-                            className="relative w-full max-w-2xl h-[80vh] bg-[#1C1C22] rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col"
+                            className="relative w-full max-w-xl h-full bg-background rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col"
                             initial={{ x: "100%", opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             exit={{ x: "100%", opacity: 0 }}
@@ -73,19 +73,13 @@ const ChatInterface = () => {
                         >
 
                             {/* Header */}
-                            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/5">
-                                <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-between p-2 border-b border-white/10 bg-white/5">
+                                <div className="flex items-center gap-2 ml-2">
                                     <span className="w-3 h-3 rounded-full bg-red-500" />
                                     <span className="w-3 h-3 rounded-full bg-yellow-500" />
                                     <span className="w-3 h-3 rounded-full bg-green-500" />
                                     <h3 className="ml-3 text-lg font-bold text-white">Hyunzai AI</h3>
                                 </div>
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="p-2 text-white/50 hover:text-white transition-colors rounded-full hover:bg-white/10"
-                                >
-                                    <FiX className="w-6 h-6" />
-                                </button>
                             </div>
 
                             {/* Chat Content Area (Placeholder) */}
@@ -102,7 +96,7 @@ const ChatInterface = () => {
                                     <input
                                         type="text"
                                         placeholder="Type a message..."
-                                        className="w-full px-5 py-3 pr-12 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-white/30 transition-all placeholder-white/30"
+                                        className="w-full px-5 py-3 pr-12 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-foreground/30 transition-all placeholder-white/30"
                                     />
                                     <button className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors">
                                         <FiSend className="w-5 h-5" />

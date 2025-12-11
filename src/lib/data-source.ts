@@ -4,6 +4,8 @@ import { User } from "../entities/User";
 import { Career } from "../entities/Career";
 import { Project } from "../entities/Project";
 import { PersonalInfo } from "../entities/PersonalInfo";
+import { Inquiry } from "../entities/Inquiry";
+import { Milestone } from "../entities/Milestone";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -14,7 +16,7 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_DATABASE || "hyunzai_db",
     synchronize: true, // 개발 환경에서만 true로 설정 (메이저 변경 시 데이터 유실 주의)
     logging: false,
-    entities: [User, Career, Project, PersonalInfo],
+    entities: [User, Career, Project, PersonalInfo, Inquiry, Milestone],
     migrations: [],
     subscribers: [],
 });
