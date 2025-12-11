@@ -3,7 +3,7 @@ import TypingIntro from "./TypingIntro";
 import HoverText from "./HoverText";
 import ChatInterface from "./ChatInterface";
 import Container from "./Container";
-import ScrollArrowIndicator from "./ScrollArrowIndicator";
+import ScrollIndicator from "./ScrollIndicator";
 
 export default function Intro() {
   return (
@@ -52,7 +52,7 @@ export default function Intro() {
       
       {/* Scroll Indicator - Bottom Center */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
-        <ScrollArrowIndicator />
+        <ScrollIndicator />
       </div>
     </div>
   );

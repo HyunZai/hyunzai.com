@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, Index } from "typeorm";
-import { User } from "./User";
+import type { User } from "./User";
 
 export enum MilestoneType {
     EDUCATION = "EDUCATION",
@@ -38,7 +38,7 @@ export class Milestone {
     @Column({ type: "int", unsigned: true, comment: "사용자 외래 키 (FK)" })
     userId!: number;
 
-    @ManyToOne(() => User, (user) => user.milestones, { onDelete: "CASCADE" })
+    @ManyToOne("User", (user: User) => user.milestones, { onDelete: "CASCADE" })
     user!: User;
 
     @CreateDateColumn({ name: "created_at", comment: "생성 일시" })

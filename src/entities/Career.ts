@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, Index } from "typeorm";
-import { User } from "./User";
+import type { User } from "./User";
 
 @Entity("careers")
 export class Career {
@@ -28,7 +28,7 @@ export class Career {
     @Column({ type: "int", unsigned: true, comment: "사용자 외래 키 (FK)" })
     userId!: number;
 
-    @ManyToOne(() => User, (user) => user.careers, { onDelete: "CASCADE" })
+    @ManyToOne("User", (user: User) => user.careers, { onDelete: "CASCADE" })
     user!: User;
 
     @CreateDateColumn({ name: "created_at", comment: "생성 일시" })

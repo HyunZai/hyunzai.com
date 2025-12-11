@@ -1,23 +1,31 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { FiChevronDown } from "react-icons/fi";
 
 export default function ScrollIndicator() {
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-[30px] h-[50px] rounded-3xl border-2 border-white/30 flex justify-center p-2">
-        <motion.div
-          animate={{
-            y: [0, 12, 0],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            repeatType: "loop",
-          }}
-          className="w-2 h-2 rounded-full bg-white mb-1"
-        />
-      </div>
-    </div>
+    <motion.div
+      className="flex flex-col items-center justify-center text-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1, duration: 1 }}
+    >
+      <motion.div
+        animate={{
+          y: [0, 8, 0],
+          opacity: [0.4, 1, 0.4],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="flex flex-col items-center -space-y-6"
+      >
+        <FiChevronDown className="w-8 h-8 md:w-12 md:h-12" />
+        <FiChevronDown className="w-8 h-8 md:w-12 md:h-12 opacity-60" />
+      </motion.div>
+    </motion.div>
   );
 }

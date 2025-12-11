@@ -7,12 +7,12 @@ export default function HomePage() {
     <main className="w-full bg-dark-bg text-white">
       <Navbar />
       {/* 1. Intro Section (Full Height) */}
-      <section id="intro" className="h-screen snap-start snap-always">
+      <section id="intro" className="h-screen">
         <Intro />
       </section>
 
       {/* 2. About Section */}
-      <section id="about" className="h-screen snap-start snap-always">
+      <section id="about" className="h-screen">
         <About />
       </section>
 

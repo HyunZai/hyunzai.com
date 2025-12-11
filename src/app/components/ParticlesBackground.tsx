@@ -7,7 +7,7 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 //import type { Container, Engine } from "@tsparticles/engine";
 import type { Engine } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
-import { particlesOptions } from "@/config/particles-config"; // 1단계에서 분리한 옵션 가져오기
+import { particlesOptions } from "@/lib/particles-config";
 
 export default function ParticlesBackground() {
   const [init, setInit] = useState(false);
