@@ -3,9 +3,6 @@
 import type { ISourceOptions } from "@tsparticles/engine";
 
 export const particlesOptions: ISourceOptions = {
-  fullScreen: {
-    enable: false, //인트로 화면에서만 사용
-  },
   background: {
     color: {
       value: "#1C1C22",
@@ -27,7 +24,6 @@ export const particlesOptions: ISourceOptions = {
       push: {
         quantity: 4,
       },
-      // 'bubble' 모드: 더 넓은 범위에서 파티클 보이게 하기
       bubble: {
         distance: 800,
         opacity: 0.6,
@@ -36,11 +32,9 @@ export const particlesOptions: ISourceOptions = {
     },
   },
 
-  // 개별 파티클의 움직임 및 외형 설정
-
+  // 파티클 설정
   particles: {
     color: {
-      // 9:1 비율로 하늘색(#88CCFF)과 빨간색(#FF5555)을 섞어 10% 확률로 빨간 점 등장
       value: [
         "#88CCFF",
         "#88CCFF",

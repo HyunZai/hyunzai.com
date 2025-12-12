@@ -1,6 +1,7 @@
 "use client";
 
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Container from "./Container";
@@ -10,7 +11,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 500) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -41,10 +42,16 @@ export default function Navbar() {
           <Container className="flex justify-between items-center py-4">
             {/* Logo or Brand Name */}
             <div
-              className="text-xl font-bold text-white cursor-pointer hover:text-primary transition-colors"
+              className="cursor-pointer"
               onClick={() => scrollToSection("intro")}
             >
-              Hyunzai.com
+              <Image
+                src="/images/logo.png"
+                alt="Hyunzai.com Logo"
+                width={150}
+                height={40}
+                className="object-contain h-8 w-auto md:h-10"
+              />
             </div>
 
             {/* Navigation Links */}

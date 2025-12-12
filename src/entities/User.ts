@@ -30,6 +30,9 @@ export class User {
     @Column({ length: 255, unique: true, comment: "이메일 주소" })
     email!: string;
 
+    @Column({ length: 100, comment: "깃허브 사용자 이름" })
+    gitUsername!: string;
+
     @Column({ name: "image_url", length: 1024, comment: "프로필 이미지 URL" })
     imageUrl!: string;
 
