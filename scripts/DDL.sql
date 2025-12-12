@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     sub_title_ko	TEXT NOT NULL COMMENT '메인페이지 서브 문구(한국어)',
     sub_title_en	TEXT NOT NULL COMMENT '메인페이지 서브 문구(영어)',
     email       	VARCHAR(255) UNIQUE NOT NULL COMMENT '이메일 주소',
+    git_username	VARCHAR(100) COMMENT 'GitHub Contributions 출력을 위한 GitHub 사용자 이름',
     image_url   	VARCHAR(1024) NOT NULL COMMENT '프로필 이미지 URL',
     gender 			ENUM('M','F','O') NOT NULL COMMENT '성별 (M:남, F:여, O:기타)',
     birth_date  	DATE NOT NULL COMMENT '생년월일',
