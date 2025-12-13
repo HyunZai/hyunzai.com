@@ -8,12 +8,13 @@ interface TypingIntroProps {
 }
 
 const TypingIntro = ({
-  nameKo = "김현재",
-  nameEn = "Hyunjae Kim",
+  nameKo,
+  nameEn,
 }: TypingIntroProps) => {
   return (
     <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 h-[1.2em] inline-block text-left min-w-[24ch]">
       <TypeAnimation
+        key={`${nameKo}-${nameEn}`} // 데이터가 변경되면 컴포넌트를 재생성하여 애니메이션을 업데이트
         sequence={[
           `안녕하세요, ${nameKo}입니다.`, // 한국어 출력
           2000, // 2초 대기

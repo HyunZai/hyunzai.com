@@ -47,12 +47,12 @@ export default function GitHubContributions({ username }: GitHubContributionsPro
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-4xl mx-auto mt-20">
-      <h3 className="text-2xl font-bold text-white mb-4">GitHub Contributions</h3>
+      <h3 className="text-2xl font-bold text-white">GitHub Contributions</h3>
       <a
         href={`https://github.com/${username}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="p-4 bg-background rounded-xl border border-foreground/30 w-[90%] flex justify-center hover:scale-[1.02] transition-transform cursor-pointer"
+        className="p-4 bg-background/50 backdrop-blur-md rounded-xl border border-foreground/30 shadow-[0_0_15px_rgba(3,195,255,0.2)] w-[90%] flex justify-center hover:scale-[1.02] transition-transform cursor-pointer"
       >
         <GitHubCalendar
           username={username}

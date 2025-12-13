@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FiMaximize2, FiSend } from "react-icons/fi";
+import { FiMaximize2, FiSend, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ChatInterface = () => {
@@ -52,63 +52,91 @@ const ChatInterface = () => {
                 </button>
             </div>
 
-            {/* Chatbot Modal */}
+            {/* Chatbot Modal - Using Portal to render at body level */}
             <AnimatePresence>
                 {isModalOpen && (
-                    <motion.div
-                        className="fixed inset-0 z-50 flex items-center justify-center md:justify-end bg-black/60 backdrop-blur-sm p-4 md:p-10"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={() => setIsModalOpen(false)} // 배경 클릭 시 닫기
-                    >
-                        {/* Modal Container */}
+                    <Portal>
                         <motion.div
-                            className="relative w-full max-w-xl h-full bg-background rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col"
-                            initial={{ x: "100%", opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: "100%", opacity: 0 }}
-                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫기 방지
+                            className="fixed inset-0 z-[100] flex items-center justify-center md:justify-end bg-black/60 backdrop-blur-sm p-4 md:p-10"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsModalOpen(false)} // 배경 클릭 시 닫기
                         >
+                            {/* Modal Container */}
+                            <motion.div
+                                className="relative w-full max-w-xl h-full bg-[#1c1c22]/95 backdrop-blur-xl rounded-2xl overflow-hidden flex flex-col"
+                                initial={{ x: "100%", opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                exit={{ x: "100%", opacity: 0 }}
+                                transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                                onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫기 방지
+                            >
 
-                            {/* Header */}
-                            <div className="flex items-center justify-between p-2 border-b border-white/10 bg-white/5">
-                                <div className="flex items-center gap-2 ml-2">
-                                    <span className="w-3 h-3 rounded-full bg-red-500" />
-                                    <span className="w-3 h-3 rounded-full bg-yellow-500" />
-                                    <span className="w-3 h-3 rounded-full bg-green-500" />
-                                    <h3 className="ml-3 text-lg font-bold text-white">Hyunzai AI</h3>
-                                </div>
-                            </div>
-
-                            {/* Chat Content Area (Placeholder) */}
-                            <div className="flex-1 p-6 text-white/80 overflow-y-auto flex items-center justify-center">
-                                <div className="text-center">
-                                    <p className="text-2xl font-bold mb-2">안녕하세요!</p>
-                                    <p className="text-white/50">무엇이든 물어보세요.</p>
-                                </div>
-                            </div>
-
-                            {/* Input Area in Modal */}
-                            <div className="p-4 border-t border-white/10 bg-white/5">
-                                <div className="relative w-full">
-                                    <input
-                                        type="text"
-                                        placeholder="Type a message..."
-                                        className="w-full px-5 py-3 pr-12 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-foreground/30 transition-all placeholder-white/30"
-                                    />
-                                    <button className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors">
-                                        <FiSend className="w-5 h-5" />
+                                {/* Header */}
+                                <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
+                                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                                        <span className="w-2 h-2 rounded-full bg-foreground animate-pulse shadow-[0_0_10px_var(--color-foreground)]" />
+                                        Hyunzai AI
+                                    </h3>
+                                    <button 
+                                        onClick={() => setIsModalOpen(false)}
+                                        className="text-white/50 hover:text-white transition-colors p-1"
+                                    >
+                                        <FiX className="w-6 h-6" />
                                     </button>
                                 </div>
-                            </div>
+
+                                {/* Chat Content Area */}
+                                <div className="flex-1 p-6 text-white overflow-y-auto flex flex-col items-center justify-center bg-gradient-to-b from-transparent to-black/20">
+                                    <div className="text-center space-y-4">
+                                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-4">
+                                            <span className="text-3xl">🤖</span>
+                                        </div>
+                                        <p className="text-2xl font-bold">무엇이든 물어보세요!</p>
+                                        <p className="text-gray-400 text-sm max-w-xs mx-auto">
+                                            포트폴리오, 기술 스택, 또는 저에 대한 궁금한 점을 자유롭게 질문해주세요.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Input Area in Modal */}
+                                <div className="p-4 border-t border-white/5 bg-transparent">
+                                    <div className="relative w-full group">
+                                        <input
+                                            type="text"
+                                            placeholder="메시지를 입력하세요..."
+                                            className="w-full pl-6 pr-12 py-3 text-white bg-white/5 backdrop-blur-md rounded-full border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/10 transition-all placeholder-white/40 shadow-inner text-sm md:text-base"
+                                        />
+                                        <button className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors hover:bg-white/10 rounded-full">
+                                            <FiSend className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
+                    </Portal>
                 )}
             </AnimatePresence>
         </>
     );
+};
+
+// Simple Portal Component inside file or separate
+import { createPortal } from "react-dom";
+
+const Portal = ({ children }: { children: React.ReactNode }) => {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        // Hydration mismatch 방지: 마운트 후 렌더링하도록 딜레이 적용
+        const timer = setTimeout(() => setMounted(true), 0);
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (typeof window === "undefined" || !mounted) return null;
+
+    return createPortal(children, document.body);
 };
 
 export default ChatInterface;

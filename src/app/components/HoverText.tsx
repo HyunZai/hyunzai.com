@@ -4,13 +4,17 @@ import { useState, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface HoverTextProps {
-    defaultContent: ReactNode;
-    hoverContent: ReactNode;
+    defaultContent: string;
+    hoverContent: string;
     className?: string;
 }
 
 const HoverText = ({ defaultContent, hoverContent, className = "" }: HoverTextProps) => {
     const [isHovered, setIsHovered] = useState(false);
+
+    const processHtml = (html: string) => {
+        return html.replace(/className=/g, "class=");
+    };
 
     return (
         <span
@@ -29,7 +33,11 @@ const HoverText = ({ defaultContent, hoverContent, className = "" }: HoverTextPr
                         transition={{ duration: 0.2 }}
                         className="block"
                     >
-                        {hoverContent}
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: processHtml(hoverContent ? hoverContent : "데이터를 가져오지 못했습니다."),
+                            }}
+                        />
                     </motion.span>
                 ) : (
                     <motion.span
@@ -40,7 +48,11 @@ const HoverText = ({ defaultContent, hoverContent, className = "" }: HoverTextPr
                         transition={{ duration: 0.2 }}
                         className="block"
                     >
-                        {defaultContent}
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: processHtml(defaultContent ? defaultContent : "데이터를 가져오지 못했습니다."),
+                            }}
+                        />
                     </motion.span>
                 )}
             </AnimatePresence>

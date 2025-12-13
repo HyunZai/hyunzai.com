@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { FaUser } from "react-icons/fa";
 import GitHubContributions from "./GitHubContributions";
+import Timeline from "./Timeline";
 
 export default function About() {
   const { user } = useUserStore();
@@ -47,8 +48,10 @@ export default function About() {
             </div>
           </div>
         </div>
-        
         {user?.gitUsername && <GitHubContributions username={user.gitUsername} />}
+        <div className="mt-20">
+          <Timeline />
+        </div>
       </Container>
     </div>
   );
