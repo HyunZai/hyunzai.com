@@ -5,6 +5,7 @@ import Intro from "./components/Intro";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
 import Projects from "./components/Projects";
+import Contact from "./components/Contact";
 import { useUserStore } from "@/store/useUserStore";
 
 export default function HomePage() {
@@ -27,9 +28,14 @@ export default function HomePage() {
         <About />
       </section>
 
-      {/* 3. Projects Section (Placeholder for future) */}
+      {/* 3. Projects Section */}
       <section id="projects">
         <Projects />
+      </section>
+
+      {/* 4. Contact Section */}
+      <section id="contact" className="bg-gradient-to-t from-black to-transparent">
+        <Contact />
       </section>
     </main>
   );
