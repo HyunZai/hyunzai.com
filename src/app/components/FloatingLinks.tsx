@@ -27,7 +27,7 @@ const links: LinkItem[] = [
   },
   {
     icon: FiMail,
-    href: "mailto:khj980211@naver.com",
+    href: "mailto:contact@hyunzai.com",
     label: "Email",
     isExternal: true,
   },
