@@ -2,13 +2,37 @@
 
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiMenu, FiX } from "react-icons/fi";
 import Container from "./Container";
 
 export default function Navbar() {
   const [isVisible, setIsVisible] = useState(false);
   const [activeSection, setActiveSection] = useState("intro");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // If menu is open and click is outside menu AND outside button
+      if (
+        isMobileMenuOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,7 +44,7 @@ export default function Navbar() {
       }
 
       // 2. Active Section Check
-      const sections = ["intro", "about", "projects", "contact"];
+      const sections = ["intro", "about", "work-experience", "projects", "contact"];
       const scrollPosition = window.scrollY + window.innerHeight / 3; // 뷰포트 상단 1/3 지점 기준
 
       for (const section of sections) {
@@ -47,7 +71,7 @@ export default function Navbar() {
     if (element) {
       // setActiveSection(id); // 스크롤 이벤트에서 처리되므로 굳이 중복 설정 안 해도 됨 (부드러운 전환 위해 놔둘 수도 있음)
       window.scrollTo({
-        top: element.offsetTop,
+        top: element.offsetTop - 20,
         behavior: "smooth",
       });
     }
@@ -78,9 +102,9 @@ export default function Navbar() {
               />
             </div>
 
-            {/* Navigation Links */}
-            <ul className="flex space-x-6 md:space-x-8 text-sm md:text-base font-medium text-gray-300">
-              {["intro", "about", "projects", "contact"].map((item) => (
+            {/* Desktop Navigation Links */}
+            <ul className="hidden md:flex space-x-6 md:space-x-8 text-sm md:text-base font-medium text-gray-300">
+              {["intro", "about", "work-experience", "projects", "contact"].map((item) => (
                 <li key={item} className="relative">
                   <button
                     onClick={() => scrollToSection(item)}
@@ -90,7 +114,7 @@ export default function Navbar() {
                         : "hover:text-white text-gray-300"
                     }`}
                   >
-                    {item === "intro" ? "Home" : item}
+                    {item === "intro" ? "Home" : item === "work-experience" ? "Experience" : item}
                   </button>
                   {activeSection === item && (
                     <motion.div
@@ -102,7 +126,50 @@ export default function Navbar() {
                 </li>
               ))}
             </ul>
+
+            {/* Mobile Menu Button */}
+            <button 
+              ref={buttonRef}
+              className="md:hidden text-white p-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            </button>
           </Container>
+
+          {/* Mobile Navigation Dropdown */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                ref={menuRef}
+                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="md:hidden absolute top-full right-4 mt-2 w-48 bg-background/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
+              >
+                <div className="flex flex-col py-2">
+                  {["intro", "about", "work-experience", "projects", "contact"].map((item) => (
+                    <button
+                      key={item}
+                      onClick={() => {
+                        scrollToSection(item);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`px-6 py-3 text-center text-sm font-medium transition-colors hover:bg-white/5 ${
+                        activeSection === item
+                          ? "text-foreground"
+                          : "text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      {item === "intro" ? "Home" : item === "work-experience" ? "Experience" : item}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
         </motion.nav>
       )}
     </AnimatePresence>

@@ -4,25 +4,52 @@ import { useState, useEffect } from "react";
 import { FiMaximize2, FiSend, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
+import AlertModal from "./AlertModal";
+
 const ChatInterface = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [alertState, setAlertState] = useState<{
+        isOpen: boolean;
+        title: string;
+        message: string;
+        type: "success" | "error";
+    }>({
+        isOpen: false,
+        title: "",
+        message: "",
+        type: "error", // Using 'error' style for alert/notice, or I can use 'success' if preferred. Let's use 'error' (yellow/warning feel) or 'success' (blue). User didn't specify. 'error' has triangle icon -> good for 'under construction'.
+    });
+
+    const handleInputClick = () => {
+        setAlertState({
+            isOpen: true,
+            title: "기능 개발 중",
+            message: "챗봇 기능은 현재 개발 중입니다.\n조금만 기다려주세요!",
+            type: "error", // Yellow warning triangle
+        });
+    };
+
+    const closeAlert = () => {
+        setAlertState((prev) => ({ ...prev, isOpen: false }));
+    };
 
     // 모달이 열려있을 때 ESC 키 입력 시 닫기
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
                 setIsModalOpen(false);
+                closeAlert();
             }
         };
 
-        if (isModalOpen) {
+        if (isModalOpen || alertState.isOpen) {
             window.addEventListener("keydown", handleKeyDown);
         }
 
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
         };
-    }, [isModalOpen]);
+    }, [isModalOpen, alertState.isOpen]);
 
     return (
         <>
@@ -31,10 +58,15 @@ const ChatInterface = () => {
                 <input
                     type="text"
                     placeholder="Ask me anything..."
-                    className="w-full px-16 py-3 text-white bg-white/10 backdrop-blur-md rounded-full opacity-80 border border-white/20 focus:outline-none focus:border-foreground focus:bg-white/20 transition-all placeholder-white/50 select-text text-sm md:text-base"
+                    className="w-full px-16 py-4 md:py-5 text-white bg-white/10 backdrop-blur-md rounded-full opacity-80 border border-white/20 focus:outline-none focus:border-foreground focus:bg-white/20 transition-all placeholder-white/50 select-text text-sm md:text-xl cursor-pointer"
+                    onClick={handleInputClick}
+                    readOnly // Prevent typing
                 />
 
-                {/* Left: Maximize Button */}
+                {/* Left: Maximize Button - Also triggers alert for consistency if requested, or keep functionality? User said "input field". I'll keep maximize button opening the modal as is, but maybe the modal inside should also alert? 
+                   User said: "입력란을 클릭하면". I will apply to the input.
+                   If I make it readOnly and onClick, it works.
+                */}
                 <button
                     onClick={() => setIsModalOpen(true)}
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 p-3 text-white/70 hover:text-white transition-colors"
@@ -45,6 +77,7 @@ const ChatInterface = () => {
 
                 {/* Right: Send Button */}
                 <button
+                    onClick={handleInputClick}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 p-3 text-white/70 hover:text-white transition-colors"
                     aria-label="Send message"
                 >
@@ -65,7 +98,7 @@ const ChatInterface = () => {
                         >
                             {/* Modal Container */}
                             <motion.div
-                                className="relative w-full max-w-xl h-full bg-[#1c1c22]/95 backdrop-blur-xl rounded-2xl overflow-hidden flex flex-col"
+                                className="relative w-full max-w-xl h-full bg-background/95 backdrop-blur-xl rounded-2xl overflow-hidden flex flex-col"
                                 initial={{ x: "100%", opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 exit={{ x: "100%", opacity: 0 }}
@@ -106,7 +139,7 @@ const ChatInterface = () => {
                                         <input
                                             type="text"
                                             placeholder="메시지를 입력하세요..."
-                                            className="w-full pl-6 pr-12 py-3 text-white bg-white/5 backdrop-blur-md rounded-full border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/10 transition-all placeholder-white/40 shadow-inner text-sm md:text-base"
+                                            className="w-full pl-6 pr-12 py-3 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/10 transition-all placeholder-white/40 shadow-inner text-sm md:text-base"
                                         />
                                         <button className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors hover:bg-white/10 rounded-full">
                                             <FiSend className="w-5 h-5" />
@@ -118,6 +151,14 @@ const ChatInterface = () => {
                     </Portal>
                 )}
             </AnimatePresence>
+            {/* Alert Modal for Development Notice */}
+            <AlertModal
+                isOpen={alertState.isOpen}
+                onClose={closeAlert}
+                title={alertState.title}
+                message={alertState.message}
+                type={alertState.type}
+            />
         </>
     );
 };

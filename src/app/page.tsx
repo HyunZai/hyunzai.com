@@ -4,8 +4,11 @@ import { useEffect } from "react";
 import Intro from "./components/Intro";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
+import WorkExperience from "./components/WorkExperience";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
+import FloatingLinks from "./components/FloatingLinks";
+import Footer from "./components/Footer";
 import { useUserStore } from "@/store/useUserStore";
 
 export default function HomePage() {
@@ -28,6 +31,11 @@ export default function HomePage() {
         <About />
       </section>
 
+      {/* 2.5. Work Experience Section */}
+      <section id="work-experience">
+        <WorkExperience />
+      </section>
+
       {/* 3. Projects Section */}
       <section id="projects">
         <Projects />
@@ -37,6 +45,10 @@ export default function HomePage() {
       <section id="contact" className="bg-gradient-to-t from-black to-transparent">
         <Contact />
       </section>
+
+      {/* Floating Action Button */}
+      <FloatingLinks />
+      <Footer />
     </main>
   );
 }

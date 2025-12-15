@@ -12,7 +12,7 @@ const TypingIntro = ({
   nameEn,
 }: TypingIntroProps) => {
   return (
-    <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 h-[1.2em] inline-block text-left min-w-[24ch]">
+    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 h-[1.2em] inline-block text-left min-w-[24ch]">
       <TypeAnimation
         key={`${nameKo}-${nameEn}`} // 데이터가 변경되면 컴포넌트를 재생성하여 애니메이션을 업데이트
         sequence={[
