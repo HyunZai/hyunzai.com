@@ -9,14 +9,14 @@ import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import FloatingLinks from "./components/FloatingLinks";
 import Footer from "./components/Footer";
-//import { useUserStore } from "@/store/useUserStore";
+import { useUserStore } from "@/store/useUserStore";
 
 export default function HomePage() {
-  // const { fetchUser } = useUserStore();
+   const { fetchUser } = useUserStore();
 
-  // useEffect(() => {
-  //   fetchUser();
-  // }, [fetchUser]);
+   useEffect(() => {
+     fetchUser();
+   }, [fetchUser]);
 
   return (
     <main className="w-full bg-dark-bg text-white">
