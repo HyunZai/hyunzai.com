@@ -44,7 +44,7 @@ export default function Navbar() {
       }
 
       // 2. Active Section Check
-      const sections = ["intro", "about", "work-experience", "projects", "contact"];
+      const sections = ["intro", "about", "career", "projects", "contact"];
       const scrollPosition = window.scrollY + window.innerHeight / 3; // 뷰포트 상단 1/3 지점 기준
 
       for (const section of sections) {
@@ -104,7 +104,7 @@ export default function Navbar() {
 
             {/* Desktop Navigation Links */}
             <ul className="hidden md:flex space-x-6 md:space-x-8 text-sm md:text-base font-medium text-gray-300">
-              {["intro", "about", "work-experience", "projects", "contact"].map((item) => (
+              {["intro", "about", "career", "projects", "contact"].map((item) => (
                 <li key={item} className="relative">
                   <button
                     onClick={() => scrollToSection(item)}
@@ -114,7 +114,7 @@ export default function Navbar() {
                         : "hover:text-white text-gray-300"
                     }`}
                   >
-                    {item === "intro" ? "Home" : item === "work-experience" ? "Experience" : item}
+                    {item === "intro" ? "Home" : item === "career" ? "Career" : item}
                   </button>
                   {activeSection === item && (
                     <motion.div
@@ -149,7 +149,7 @@ export default function Navbar() {
                 className="md:hidden absolute top-full right-4 mt-2 w-48 bg-background/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
               >
                 <div className="flex flex-col py-2">
-                  {["intro", "about", "work-experience", "projects", "contact"].map((item) => (
+                  {["intro", "about", "career", "projects", "contact"].map((item) => (
                     <button
                       key={item}
                       onClick={() => {
@@ -162,7 +162,7 @@ export default function Navbar() {
                           : "text-gray-400 hover:text-white"
                       }`}
                     >
-                      {item === "intro" ? "Home" : item === "work-experience" ? "Experience" : item}
+                      {item === "intro" ? "Home" : item === "career" ? "Career" : item}
                     </button>
                   ))}
                 </div>

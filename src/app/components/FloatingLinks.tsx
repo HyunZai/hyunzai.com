@@ -59,7 +59,7 @@ export default function FloatingLinks() {
   // Note: SiVelog might need 'react-icons/si' package. If it fails, I'll switch to FiBookOpen.
 
   return (
-    <div ref={containerRef} className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 flex flex-col items-center gap-1.5 md:gap-4">
+    <div ref={containerRef} className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex flex-col items-center gap-1.5 md:gap-4">
       <AnimatePresence>
         {isOpen && (
           <motion.div
