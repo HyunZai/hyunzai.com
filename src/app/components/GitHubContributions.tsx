@@ -29,8 +29,8 @@ export default function GitHubContributions({ username }: GitHubContributionsPro
 
   // 화면 크기에 따른 동적 설정
   const calendarConfig = isMobile
-    ? { blockSize: 10, blockMargin: 5, blockRadius: 3, months: 3 }
-    : { blockSize: 16, blockMargin: 10, blockRadius: 4, months: 6 };
+    ? { blockSize: 12, blockMargin: 5, blockRadius: 4, months: 3 }
+    : { blockSize: 14, blockMargin: 6, blockRadius: 4, months: 6 };
 
   // Git 잔디밭 최근 N개월만 출력
   const selectRecentContributions = (contributions: Day[]) => {
