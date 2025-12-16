@@ -47,6 +47,12 @@ const ibmPlexSansKR = localFont({
 export const metadata: Metadata = {
   title: "Hyunjae's Personal Website",
   description: "Hyunjae's Personal Website",
+
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 export default function RootLayout({
