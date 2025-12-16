@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Intro from "./components/Intro";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
-import WorkExperience from "./components/WorkExperience";
+import Career from "./components/Career";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import FloatingLinks from "./components/FloatingLinks";
@@ -32,8 +32,8 @@ export default function HomePage() {
       </section>
 
       {/* 2.5. Work Experience Section */}
-      <section id="work-experience">
-        <WorkExperience />
+      <section id="career">
+        <Career />
       </section>
 
       {/* 3. Projects Section */}
