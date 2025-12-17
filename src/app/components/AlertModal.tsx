@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiCheck, FiAlertTriangle } from "react-icons/fi";
+import { FiCheckCircle, FiXCircle } from "react-icons/fi";
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -53,7 +53,7 @@ export default function AlertModal({
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           {/* Backdrop */}
           <motion.div
-            className="absolute inset-0 bg-black/60 backdrop-blur-md"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -62,51 +62,42 @@ export default function AlertModal({
 
           {/* Modal Content */}
           <motion.div
-            className="relative w-full max-w-md overflow-hidden rounded-3xl bg-background/90 backdrop-blur-xl border border-white/10 shadow-[0_0_40px_-10px_rgba(3,195,255,0.3)] ring-1 ring-white/20"
-            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="relative w-full max-w-sm md:max-w-md overflow-hidden rounded-2xl bg-[#1a1a1a] border border-white/5 shadow-2xl"
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
-            {/* Background Gradient Blob */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-gradient-to-b from-cyan-500/20 to-transparent blur-3xl pointer-events-none" />
-
-            <div className="p-8 flex flex-col items-center text-center">
+            <div className="p-6 md:p-8 flex flex-col items-center text-center">
               {/* Icon */}
-              <motion.div
-                initial={{ scale: 0, rotate: -20 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ delay: 0.1, type: "spring" }}
-                className={`mb-6 w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg ${
+              <div
+                className={`mb-4 md:mb-6 rounded-full flex items-center justify-center ${
                   type === "success"
-                    ? "bg-gradient-to-br from-cyan-400 to-blue-600 shadow-cyan-500/30"
-                    : "bg-gradient-to-br from-red-400 to-pink-600 shadow-red-500/30"
+                    ? "text-green-500"
+                    : "text-red-500"
                 }`}
               >
                 {type === "success" ? (
-                  <FiCheck className="w-10 h-10 text-white drop-shadow-md" />
+                  <FiCheckCircle className="w-16 h-16 md:w-20 md:h-20" style={{ strokeWidth: 1.5 }} />
                 ) : (
-                  <FiAlertTriangle className="w-10 h-10 text-white drop-shadow-md" />
+                  <FiXCircle className="w-16 h-16 md:w-20 md:h-20" style={{ strokeWidth: 1.5 }} />
                 )}
-              </motion.div>
+              </div>
 
               {/* Text */}
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">
+              <h3 className="text-xl md:text-2xl font-semibold text-white mb-2">
                 {title}
               </h3>
-              <p className="text-gray-300 leading-relaxed text-base md:text-lg whitespace-pre-line">
+              <p className="text-gray-400 text-sm md:text-base leading-relaxed whitespace-pre-line mb-6 md:mb-8">
                 {message}
               </p>
 
               {/* Action Button */}
               <button
                 onClick={onClose}
-                className="mt-8 w-full py-3 bg-foreground text-background font-bold rounded-xl hover:bg-white transition-colors flex items-center justify-center gap-1 group relative overflow-hidden"
+                className="w-full py-2.5 md:py-3 bg-foreground text-background font-medium rounded-lg hover:opacity-90 transition-opacity text-sm md:text-base"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  확인
-                </span>
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                확인
               </button>
             </div>
           </motion.div>
