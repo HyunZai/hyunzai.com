@@ -122,13 +122,11 @@ export default function About() {
                   <div className="flex justify-between items-start mb-1">
                     <span className="font-bold text-white text-lg">캡스톤디자인 경진대회 우수상</span>
                     {/* Desktop Date Badge */}
-                    <span className="hidden md:block text-sm text-gray-400 bg-white/10 px-2 py-1 rounded">2024. 12. 20</span>
+                    <span className="text-sm text-gray-400 bg-white/10 px-2 py-1 rounded">2024. 12. 20</span>
                   </div>
                   
                   <div className="flex justify-between items-center mb-2">
                     <p className="text-sm text-gray-400 font-medium">(사)한국산학기술학회</p>
-                    {/* Mobile Date Badge */}
-                    <span className="md:hidden text-xs text-gray-400 bg-white/10 px-2 py-1 rounded">2024. 12. 20</span>
                   </div>
 
                   <p className="text-gray-100 text-sm leading-relaxed">
