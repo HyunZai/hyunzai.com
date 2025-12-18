@@ -9,22 +9,30 @@ import ScrollIndicator from "./ScrollIndicator";
 import { useUserStore } from "@/store/useUserStore";
 
 export default function Intro() {
-  const { user } = useUserStore();
+  const { user, isLoading } = useUserStore();
+
+  if (isLoading || !user) {
+    return (
+      <div className="relative flex items-center justify-center min-h-screen">
+        <ParticlesBackground />
+      </div>
+    );
+  }
   
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900">
+    <div className="relative flex items-center justify-center min-h-screen">
       <ParticlesBackground />
 
-      <Container className="relative z-10 flex flex-col justify-center h-full text-left text-white">
+      <Container className="relative z-10 flex flex-col justify-center h-full text-left text-white select-none animate-fadeIn">
         <TypingIntro
-          nameKo={user ? user.nameKo : "홍길동"}
-          nameEn={user ? user.nameEn : "Gildong Hong"}
+          nameKo={user.nameKo}
+          nameEn={user.nameEn}
         />
 
         <h2 className="text-xl md:text-3xl font-extrabold mb-4 animate-fadeIn text-left mt-2 md:mt-4">
           <HoverText
-            defaultContent={user ? user.subTitleKo : ""}
-            hoverContent={user ? user.subTitleEn : ""}
+            defaultContent={user.subTitleKo}
+            hoverContent={user.subTitleEn}
           />
         </h2>
 
@@ -46,7 +54,7 @@ export default function Intro() {
         <ChatInterface />
       </Container>
       
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-fadeIn delay-1000">
         <ScrollIndicator />
       </div>
     </div>

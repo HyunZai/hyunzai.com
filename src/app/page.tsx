@@ -16,32 +16,46 @@ export default function HomePage() {
 
    useEffect(() => {
      fetchUser();
+
+    // Handle hash navigation on mount
+    const hash = window.location.hash;
+    if (hash) {
+      // Decode hash (handling URL encoding) and normalize to lowercase for ID matching
+      const targetId = decodeURIComponent(hash.substring(1)).toLowerCase();
+      
+      // Use a small timeout to ensure DOM is ready
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          window.scrollTo({
+            top: element.offsetTop - 20, // Match Navbar offset
+            behavior: "smooth",
+          });
+        }
+      }, 100);
+    }
+
    }, [fetchUser]);
 
   return (
     <main className="w-full bg-dark-bg text-white">
       <Navbar />
-      {/* 1. Intro Section (Full Height) */}
       <section id="intro" className="h-screen">
         <Intro />
       </section>
 
-      {/* 2. About Section */}
       <section id="about" className="min-h-screen">
         <About />
       </section>
 
-      {/* 2.5. Work Experience Section */}
       <section id="career">
         <Career />
       </section>
 
-      {/* 3. Projects Section */}
       <section id="projects">
         <Projects />
       </section>
 
-      {/* 4. Contact Section */}
       <section id="contact" className="bg-gradient-to-t from-black to-transparent">
         <Contact />
       </section>
