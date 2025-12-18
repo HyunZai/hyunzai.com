@@ -69,7 +69,7 @@ export default function Navbar() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      // setActiveSection(id); // 스크롤 이벤트에서 처리되므로 굳이 중복 설정 안 해도 됨 (부드러운 전환 위해 놔둘 수도 있음)
+      window.history.pushState(null, "", `#${id}`);
       window.scrollTo({
         top: element.offsetTop - 20,
         behavior: "smooth",

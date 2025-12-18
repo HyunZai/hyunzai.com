@@ -20,7 +20,7 @@ export default function ProjectCarousel({ images }: ProjectCarouselProps) {
   };
 
   return (
-    <div className="relative w-full h-[300px] md:h-[650px] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-[300px] md:h-[480px] flex items-center justify-center overflow-hidden">
       {/* Slide Container */}
       <div className="relative w-full h-full flex items-center justify-center">
         {images.map((src, index) => {
@@ -80,7 +80,7 @@ export default function ProjectCarousel({ images }: ProjectCarouselProps) {
       </div>
 
       {/* Pagination Indicators */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-30">
         {images.map((_, index) => (
           <div
             key={index}

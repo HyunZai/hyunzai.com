@@ -26,8 +26,8 @@ export const particlesOptions: ISourceOptions = {
       },
       bubble: {
         distance: 800,
-        opacity: 0.6,
-        size: 3,
+        opacity: 0.5,
+        size: 2.5,
       },
     },
   },
@@ -72,7 +72,7 @@ export const particlesOptions: ISourceOptions = {
     },
     // 파티클의 불투명도
     opacity: {
-      value: 0,
+      value: 0.1,
     },
     // 파티클 모양
     shape: {
