@@ -4,65 +4,24 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Container from "./Container";
 import { FiCalendar, FiBriefcase, FiCheckCircle } from "react-icons/fi";
-
-interface Experience {
-  company: string;
-  department: string;
-  position: string;
-  period: string;
-  role: string;
-  projects: {
-    title: string;
-    description?: string;
-    troubleshooting?: string;
-    stack: string[];
-  }[];
-}
-
-const experiences: Experience[] = [
-  {
-    company: "SOLBIT",
-    department: "솔루션개발팀",
-    position: "인턴",
-    period: "2025. 03. ~ 2025. 08.",
-    role: "Full Stack Web Developer",
-    projects: [
-      {
-        title: "University e-IRB System Web Application",
-        stack: ["Spring", "JSP", "Oracle", "JavaScript"],
-        troubleshooting: "특정 사용자의 대용량 데이터 조회로 인한 메인 페이지 로딩 Timeout 및 서비스 장애 이슈를 해결했습니다. 로그 분석을 통해 단순 쿼리 튜닝으로는 한계가 있음을 파악하고, 데이터 조회 로직을 AJAX 기반의 비동기 처리 방식으로 전면 전환했습니다. 그 결과 로딩 지연 문제를 근본적으로 해결하고, 대량 데이터 처리 시에도 전체 시스템에 영향을 주지 않도록 안정성을 확보했습니다."
-      },
-      {
-        title: "Kiosk Backoffice Web Application",
-        stack: ["Node.js", "React", "MariaDB", "JavaScript"],
-        troubleshooting: "클라이언트의 반복적인 수동 데이터 조회 요청 업무를 개선했습니다. 매번 발생하는 유사한 요청을 처리하는 비효율을 해결하고자, 검색 및 필터링 기능이 포함된 사용자 정보 조회 어드민 기능을 제안하고 개발했습니다. 도입 이후 수동 요청 건수가 약 95% 감소하여 운영 팀이 핵심 업무에 집중할 수 있는 환경을 조성했습니다."
-      }
-    ]
-  },
-  {
-    company: "M&J SOFT",
-    department: "개발팀",
-    position: "사원",
-    period: "2020. 05. ~ 2023. 02.",
-    role: "Full Stack Web Developer & Desktop Application Developer",
-    projects: [
-      {
-        title: "EMS (Engineering Management System) Web Application",
-        stack: ["ASP.NET Core", "C#", "MSSQL", "HTML/CSS", "JavaScript"],
-        description: "사내 유일한 웹 개발 담당자로서 ASP.NET Core 기반 웹 애플리케이션의 아키텍처 설계부터 프론트엔드, 백엔드 개발 전 과정을 주도했습니다. 초기 구축 단계에서 다양한 시행착오를 겪으며 코딩뿐만 아니라 서비스 기획과 설계의 중요성을 깊이 체감했습니다. 이 경험은 제가 웹 개발자로서의 확고한 커리어 방향성을 설정하는 중요한 계기가 되었습니다."
-      },
-      {
-        title: "Intergraph S3D API Desktop Application",
-        stack: ["C#", "WinForms"],
-        description: "Intergraph사의 Smart 3D API를 활용하여 설계 자동화 및 데이터 검증을 위한 데스크톱 애플리케이션을 개발 및 유지보수했습니다."
-      }
-    ]
-  }
-];
-
+import { usePortfolioStore } from "@/store/usePortfolioStore";
 
 export default function Career() {
   const [selectedTab, setSelectedTab] = useState(0);
+  const { store } = usePortfolioStore();
+  const careers = store?.careers || [];
+
+  if (!careers || careers.length === 0) {
+    return null;
+  }
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "Present";
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    return `${year}. ${month}.`;
+  };
 
   return (
     <section id="career" className="relative z-10 py-20 text-white">
@@ -77,22 +36,21 @@ export default function Career() {
             Career
           </h2>
 
-
           <div className="flex flex-col md:flex-row gap-4 md:gap-8 md:min-h-[500px]">
             {/* Left Side: Company Tabs */}
             <div className="w-full md:w-1/4 flex flex-col md:flex-col gap-2 pb-2 md:pb-0">
               {/* Mobile: Segmented Control Style */}
-              <div className="md:hidden flex p-1 bg-white/5 rounded-xl border border-white/10 relative">
-                {experiences.map((exp, index) => (
+              <div className="md:hidden flex p-1 bg-white/5 rounded-xl border border-white/10 relative overflow-x-auto">
+                {careers.map((career, index) => (
                   <button
-                    key={exp.company}
+                    key={career.id}
                     onClick={() => setSelectedTab(index)}
-                    className={`flex-1 py-2 text-sm font-medium rounded-lg relative z-10 transition-colors duration-300 ${
+                    className={`flex-1 py-2 px-3 text-sm font-medium rounded-lg relative z-10 transition-colors duration-300 min-w-[100px] whitespace-nowrap ${
                       selectedTab === index ? "text-white" : "text-gray-400 hover:text-gray-200"
                     }`}
                   >
                     <span className="relative">
-                      {exp.company}
+                      {career.company}
                       {selectedTab === index && (
                         <motion.div
                           layoutId="activeTabUnderline"
@@ -114,11 +72,11 @@ export default function Career() {
                 ))}
               </div>
 
-              {/* Desktop: Vertical List Style (unchanged logic) */}
+              {/* Desktop: Vertical List Style */}
               <div className="hidden md:flex flex-col gap-2">
-                {experiences.map((exp, index) => (
+                {careers.map((career, index) => (
                   <button
-                    key={exp.company}
+                    key={career.id}
                     onClick={() => setSelectedTab(index)}
                     className={`py-4 px-6 text-left rounded-r-xl transition-all duration-300 relative whitespace-nowrap text-base ${
                       selectedTab === index 
@@ -126,7 +84,7 @@ export default function Career() {
                         : "text-gray-400 hover:bg-white/5 hover:text-gray-200 border border-transparent"
                     }`}
                   >
-                    <span className="relative z-10">{exp.company}</span>
+                    <span className="relative z-10">{career.company}</span>
                     {selectedTab === index && (
                       <motion.div 
                         layoutId="activeTabDesktop"
@@ -147,7 +105,7 @@ export default function Career() {
                
                <AnimatePresence mode="wait">
                 <motion.div
-                  key={selectedTab}
+                  key={careers[selectedTab].id}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
@@ -157,61 +115,83 @@ export default function Career() {
                   {/* Header Info */}
                   <div>
                     <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 flex flex-col md:flex-row md:items-end gap-1 md:gap-2">
-                      {experiences[selectedTab].company}
-                      <span className="text-base md:text-lg font-medium text-foreground py-1">@{experiences[selectedTab].department}</span>
+                      {careers[selectedTab].company}
+                      {careers[selectedTab].department && (
+                        <span className="text-base md:text-lg font-medium text-foreground py-1">
+                          @{careers[selectedTab].department}
+                        </span>
+                      )}
                     </h3>
                     <div className="text-gray-400 text-xs md:text-base mb-4 flex flex-wrap gap-x-4 gap-y-2 items-center">
-                      <span className="flex items-center gap-1"><FiBriefcase className="flex-shrink-0" /> {experiences[selectedTab].position}</span>
-                      <span className="flex items-center gap-1"><FiCalendar className="flex-shrink-0" /> {experiences[selectedTab].period}</span>
+                      <span className="flex items-center gap-1">
+                        <FiBriefcase className="flex-shrink-0" /> {careers[selectedTab].jobTitle}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <FiCalendar className="flex-shrink-0" />{" "}
+                        {formatDate(careers[selectedTab].startDate)} ~ {formatDate(careers[selectedTab].endDate)}
+                      </span>
                     </div>
-                    <p className="text-gray-300 text-sm md:text-base font-medium border-l-2 border-foreground/50 pl-4 py-1 italic">
-                      {experiences[selectedTab].role}
-                    </p>
+                    {careers[selectedTab].description && (
+                      <p className="text-gray-300 text-sm md:text-base font-medium border-l-2 border-foreground/50 pl-4 py-1 italic">
+                        {careers[selectedTab].description}
+                      </p>
+                    )}
                   </div>
 
                   <div className="h-px bg-white/10 w-full" />
 
                   {/* Projects */}
-                  <div className="space-y-8">
-                    <h4 className="text-xl font-bold text-white mb-4">Key Projects & Achievements</h4>
-                    <div className="space-y-6">
-                      {experiences[selectedTab].projects.map((project, i) => (
-                        <div key={i} className="bg-black/20 p-6 rounded-2xl border border-white/5 hover:border-white/10 transition-colors">
-                          <div className="flex flex-col gap-4">
-                            <div>
-                              <h5 className="text-lg font-bold text-foreground mb-3 flex items-start gap-2">
-                                <FiCheckCircle className="mt-1 flex-shrink-0" />
-                                {project.title}
-                              </h5>
+                  {careers[selectedTab].projects && careers[selectedTab].projects.length > 0 && (
+                    <div className="space-y-8">
+                      <h4 className="text-xl font-bold text-white mb-4">Key Projects & Achievements</h4>
+                      <div className="space-y-6">
+                        {careers[selectedTab].projects.map((project) => (
+                          <div key={project.id} className="bg-black/20 p-6 rounded-2xl border border-white/5 hover:border-white/10 transition-colors">
+                            <div className="flex flex-col gap-4">
+                              <div>
+                                <h5 className="text-lg font-bold text-foreground mb-3 flex items-start gap-2">
+                                  <FiCheckCircle className="mt-1 flex-shrink-0" />
+                                  {project.title}
+                                </h5>
 
-                              {/* Tech Stack per Project */}
-                              <div className="flex flex-wrap gap-2 mb-3 pl-6">
-                                {project.stack.map((tech) => (
-                                  <span key={tech} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 hover:text-white hover:border-foreground/50 hover:bg-white/10 transition-all font-medium">
-                                    {tech}
-                                  </span>
-                                ))}
+                                {project.role && (
+                                  <div className="mb-3 pl-8"> 
+                                    <div 
+                                        className="text-sm font-medium text-gray-300 border-l-2 border-foreground/70 pl-3 py-0.5"
+                                        dangerouslySetInnerHTML={{ __html: project.role.replace(/className/g, "class") }} 
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Tech Stack per Project */}
+                                {project.techStack && project.techStack.length > 0 && (
+                                  <div className="flex flex-wrap gap-2 mb-3 pl-6">
+                                    {project.techStack.map((tech) => (
+                                      <span key={tech} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 hover:text-white hover:border-foreground/50 hover:bg-white/10 transition-all font-medium">
+                                        {tech}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
                               </div>
                             </div>
-                          </div>
-                          
-                          {project.description && (
-                            <div className="text-gray-300 leading-relaxed text-sm md:text-base pl-6">
-                              <p className="mb-2 font-semibold text-white/80">Description</p>
-                              {project.description}
-                            </div>
-                          )}
+                            
+                            {project.description && (
+                              <div className="text-gray-300 leading-relaxed text-sm md:text-base pl-6 mt-2">
+                                <div 
+                                  dangerouslySetInnerHTML={{ 
+                                    __html: project.description.replace(/className/g, "class") 
+                                  }} 
+                                />
+                              </div>
+                            )}
 
-                          {project.troubleshooting && (
-                            <div className="text-gray-300 leading-relaxed text-sm md:text-base pl-6">
-                              <p className="mb-2 font-semibold text-white/80 text-orange-400/90">Troubleshooting & Impact</p>
-                              {project.troubleshooting}
-                            </div>
-                          )}
-                        </div>
-                      ))}
+
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </motion.div>
                </AnimatePresence>
             </div>

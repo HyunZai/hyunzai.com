@@ -4,13 +4,14 @@ import Container from "./Container";
 import Image from "next/image";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useUserStore } from "@/store/useUserStore";
+import { usePortfolioStore } from "@/store/usePortfolioStore";
 import { FaUser } from "react-icons/fa";
 import GitHubContributions from "./GitHubContributions";
 import Timeline from "./Timeline";
 
 export default function About() {
-  const { user } = useUserStore();
+  const { store } = usePortfolioStore();
+  const user = store?.user;
   const [imageError, setImageError] = useState(false);
 
   return (
@@ -28,19 +29,11 @@ export default function About() {
           
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div className="w-full md:w-3/5 space-y-6 text-lg md:text-xl leading-relaxed text-gray-300 order-2 md:order-1 bg-background rounded-xl">
-              <p>
-                저의 가치관은 <span className="text-white font-semibold">아쉬워하되, 후회는 말자</span>입니다.
-                과거에 머무르기보다 미래를 위해 현재를 투자하는 삶을 지향하며, 모든 결과는 스스로의 선택에서 비롯된다고 믿습니다.
-                그래서 어떤 상황에서도 책임감을 가지고 끝까지 해내는 태도를 중요하게 생각합니다.
-              </p>
-              <p>
-                비전공자로 코딩을 처음 접했지만, 개발의 매력에 깊이 빠져 더 배우고 성장하기 위해 비교적 늦은 나이에 대학교 진학이라는 <span className="text-white font-semibold">도전</span>을 선택했습니다.
-                즐거움에서 시작된 이 선택은 지금도 저를 계속해서 성장하게 만드는 원동력이 되고 있습니다.
-              </p>
-              <p>
-                현재는 웹 프론트엔드와 백엔드 전반에 걸친 기술 스택을 다루고 있으며,
-                특히 React, Next.js, Node.js 생태계에 깊은 관심을 가지고 있습니다.
-              </p>
+              <div 
+                dangerouslySetInnerHTML={{ 
+                  __html: (user?.aboutIntro || "").replace(/className/g, "class") 
+                }} 
+              />
             </div>
 
             <div className="w-full md:w-2/5 flex justify-center order-1 md:order-2">
@@ -60,27 +53,8 @@ export default function About() {
             </div>
           </div>
           
-          {/* 스킬 스택 섹션 */}
-          <div className="py-20">
-            <h3 className="text-2xl font-bold text-center mb-8 text-white">Tech Stack</h3>
-            <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
-              {[
-                "Java", "C#", "TypeScript", "JavaScript", "HTML", "CSS", "SQL", 
-                "Spring Boot", "ASP.NET Core", "Node.js", "Next.js", "React", 
-                "TailwindCSS", "Git"
-              ].map((skill) => (
-                <span 
-                  key={skill}
-                  className="px-4 py-2 rounded-full bg-background/50 backdrop-blur-sm border border-foreground/30 text-gray-300 text-sm md:text-base hover:scale-110 transition-transform duration-300 hover:text-foreground hover:border-foreground shadow-[0_0_10px_rgba(3,195,255,0.1)] cursor-default select-none"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-          
           {/* 수상 및 자격증 섹션 */}
-          <div className="py-10 border-t border-white/10">
+          <div className="py-20">
             <h3 className="text-2xl font-bold text-center mb-12 text-white">Awards & Certifications</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {/* Awards */}
@@ -89,23 +63,36 @@ export default function About() {
                   🏆 Awards
                 </h4>
                 <ul className="space-y-6">
-                  <li>
-                    <div className="flex justify-between items-start mb-1">
-                      <span className="font-bold text-white text-lg">캡스톤디자인 경진대회 우수상</span>
-                      {/* Desktop Date Badge */}
-                      <span className="text-sm text-gray-400 bg-white/10 px-2 py-1 rounded">2024. 12. 20</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center mb-2">
-                      <p className="text-sm text-gray-400 font-medium">(사)한국산학기술학회</p>
-                    </div>
+                  {store?.achievements
+                    .filter((item) => item.type === "AWARD")
+                    .map((award) => (
+                      <li key={award.id}>
+                        <div className="flex justify-between items-start mb-1">
+                          <span className="font-bold text-white text-lg">{award.title}</span>
+                          {/* Desktop Date Badge */}
+                          <span className="text-sm text-gray-400 bg-white/10 px-2 py-1 rounded">
+                            {new Date(award.startDate).toLocaleDateString("ko-KR", {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                            }).replace(/\./g, ".").slice(0, -1)}
+                          </span>
+                        </div>
+                        
+                        <div className="flex justify-between items-center mb-2">
+                          <p className="text-sm text-gray-400 font-medium">{award.organization}</p>
+                        </div>
 
-                    <p className="text-gray-100 text-sm leading-relaxed">
-                      대학교 전공동아리 <span className="text-white">W.I.S</span>에서 팀장으로 참여. 
-                      팀원들과 &apos;미아 방지 교육 캐주얼 게임보드판&apos;을 제작하고 
-                      Unity 기반의 캐주얼 게임을 개발해 출품.
-                    </p>
-                  </li>
+                        {award.description && (
+                          <div 
+                            className="text-gray-100 text-sm leading-relaxed"
+                            dangerouslySetInnerHTML={{ 
+                              __html: award.description.replace(/className/g, "class") 
+                            }}
+                          />
+                        )}
+                      </li>
+                    ))}
                 </ul>
               </div>
 
@@ -115,20 +102,23 @@ export default function About() {
                   📜 Certifications
                 </h4>
                 <ul className="space-y-6">
-                  <li className="flex justify-between items-center border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                    <div>
-                      <span className="font-bold text-white block mb-1">SQL 개발자 (SQLD)</span>
-                      <span className="text-sm text-gray-400">한국데이터산업진흥원</span>
-                    </div>
-                    <span className="text-sm text-gray-400 bg-white/10 px-2 py-1 rounded">2025. 04. 04</span>
-                  </li>
-                  <li className="flex justify-between items-center border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                    <div>
-                      <span className="font-bold text-white block mb-1">정보처리기사</span>
-                      <span className="text-sm text-gray-400">한국산업인력공단</span>
-                    </div>
-                    <span className="text-sm text-gray-400 bg-white/10 px-2 py-1 rounded">2024. 12. 11</span>
-                  </li>
+                  {store?.achievements
+                    .filter((item) => item.type === "CERTIFICATION")
+                    .map((cert) => (
+                      <li key={cert.id} className="flex justify-between items-center border-b border-white/5 pb-4 last:border-0 last:pb-0">
+                        <div>
+                          <span className="font-bold text-white block mb-1">{cert.title}</span>
+                          <span className="text-sm text-gray-400">{cert.organization}</span>
+                        </div>
+                        <span className="text-sm text-gray-400 bg-white/10 px-2 py-1 rounded">
+                          {new Date(cert.startDate).toLocaleDateString("ko-KR", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                          }).replace(/\./g, ".").slice(0, -1)}
+                        </span>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>

@@ -6,12 +6,14 @@ import HoverText from "./HoverText";
 import ChatInterface from "./ChatInterface";
 import Container from "./Container";
 import ScrollIndicator from "./ScrollIndicator";
-import { useUserStore } from "@/store/useUserStore";
+import { usePortfolioStore } from "@/store/usePortfolioStore";
 
 export default function Intro() {
-  const { user, isLoading } = useUserStore();
+  const { store } = usePortfolioStore();
 
-  if (isLoading || !user) {
+  const user = store?.user;
+
+  if (!user) {
     return (
       <div className="relative flex items-center justify-center min-h-screen">
         <ParticlesBackground />

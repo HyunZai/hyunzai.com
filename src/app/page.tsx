@@ -1,41 +1,39 @@
 "use client";
 
-import { useEffect } from "react";
 import Intro from "./components/Intro";
 import About from "./components/About";
-import Navbar from "./components/Navbar";
-import Career from "./components/Career";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
+import Navbar from "./components/Navbar";
+import Career from "./components/Career";
 import FloatingLinks from "./components/FloatingLinks";
 import Footer from "./components/Footer";
-import { useUserStore } from "@/store/useUserStore";
+import { useEffect } from "react";
+import { usePortfolioStore } from "@/store/usePortfolioStore";
 
-export default function HomePage() {
-   const { fetchUser } = useUserStore();
+export default function Home() {
+  const { fetchPortfolioData } = usePortfolioStore();
 
-   useEffect(() => {
-     fetchUser();
+  useEffect(() => {
+    fetchPortfolioData();
 
-    // Handle hash navigation on mount
+    // Hash(#) navigation
     const hash = window.location.hash;
     if (hash) {
-      // Decode hash (handling URL encoding) and normalize to lowercase for ID matching
       const targetId = decodeURIComponent(hash.substring(1)).toLowerCase();
       
-      // Use a small timeout to ensure DOM is ready
       setTimeout(() => {
         const element = document.getElementById(targetId);
         if (element) {
           window.scrollTo({
-            top: element.offsetTop - 20, // Match Navbar offset
+            top: element.offsetTop - 20,
             behavior: "smooth",
           });
         }
       }, 100);
     }
-
-   }, [fetchUser]);
+    
+  }, [fetchPortfolioData]);
 
   return (
     <main className="w-full bg-dark-bg text-white">
