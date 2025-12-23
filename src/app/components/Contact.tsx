@@ -7,6 +7,12 @@ import Container from "./Container";
 import AlertModal from "./AlertModal";
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [alertState, setAlertState] = useState<{
     isOpen: boolean;
     title: string;
@@ -19,15 +25,52 @@ export default function Contact() {
     type: "error",
   });
 
-  const handleInputInteraction = (e: React.MouseEvent | React.FocusEvent) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    (e.target as HTMLElement).blur();
-    setAlertState({
-      isOpen: true,
-      title: "기능 개발 중",
-      message: "메일 전송 기능은 현재 개발 중입니다.\n이메일로 직접 연락 부탁드립니다!",
-      type: "error",
-    });
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "메시지 전송에 실패했습니다.");
+      }
+
+      setAlertState({
+        isOpen: true,
+        title: "전송 완료",
+        message: "메시지가 성공적으로 전송되었습니다!",
+        type: "success",
+      });
+
+      // 폼 초기화
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
+      setAlertState({
+        isOpen: true,
+        title: "전송 실패",
+        message: errorMessage,
+        type: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const closeAlert = () => {
@@ -36,7 +79,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-20 bg-dark-bg text-white overflow-hidden">
-      {/* Background Blobs */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-900/20 rounded-full blur-[100px] z-0 pointer-events-none" />
 
       <Container className="relative z-10">
@@ -52,7 +94,7 @@ export default function Contact() {
           </div>
 
           <div className="max-w-xl mx-auto bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5 md:p-10 shadow-2xl">
-            <form className="space-y-2 md:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-2 md:space-y-6">
               {/* Name Input */}
               <div className="space-y-2">
                 <label htmlFor="name" className="text-sm font-medium text-gray-300 ml-1">
@@ -62,10 +104,11 @@ export default function Contact() {
                   type="text"
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   placeholder="이름을 입력하세요"
-                  className="w-full px-5 py-2 md:py-3 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/5 transition-all placeholder-white/20 cursor-pointer"
-                  onClick={handleInputInteraction}
-                  readOnly
+                  required
+                  className="w-full px-5 py-2 md:py-3 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/5 transition-all placeholder-white/20"
                 />
               </div>
 
@@ -78,10 +121,11 @@ export default function Contact() {
                   type="email"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="이메일을 입력하세요"
-                  className="w-full px-5 py-2 md:py-3 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/5 transition-all placeholder-white/20 cursor-pointer"
-                  onClick={handleInputInteraction}
-                  readOnly
+                  required
+                  className="w-full px-5 py-2 md:py-3 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/5 transition-all placeholder-white/20"
                 />
               </div>
 
@@ -94,10 +138,11 @@ export default function Contact() {
                   id="message"
                   name="message"
                   rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="내용을 입력하세요"
-                  className="w-full px-5 py-2 md:py-3 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/5 transition-all placeholder-white/20 resize-none cursor-pointer"
-                  onClick={handleInputInteraction}
-                  readOnly
+                  required
+                  className="w-full px-5 py-2 md:py-3 text-white bg-black/20 rounded-xl border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/5 transition-all placeholder-white/20 resize-none"
                 />
               </div>
 
@@ -105,30 +150,18 @@ export default function Contact() {
               <div className="space-y-2">
                 {/* Submit Button */}
                 <button
-                  type="button"
-                  className="w-full py-3 md:py-4 bg-foreground text-background font-bold rounded-xl hover:bg-white transition-colors flex items-center justify-center gap-2 group relative overflow-hidden"
-                  onClick={handleInputInteraction}
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-3 md:py-4 bg-foreground text-background font-bold rounded-xl hover:bg-white transition-colors flex items-center justify-center gap-2 group relative overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    Send Message <FiSend className="group-hover:translate-x-1 transition-transform" />
+                    {isLoading ? "Sending..." : "Send Message"} 
+                    {!isLoading && <FiSend className="group-hover:translate-x-1 transition-transform" />}
                   </span>
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                  {!isLoading && (
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                  )}
                 </button>
-
-                {/* Divider */}
-                <div className="flex items-center gap-4">
-                  <div className="flex-1 h-px bg-white/10" />
-                  <span className="text-white/30 text-md font-medium">or</span>
-                  <div className="flex-1 h-px bg-white/10" />
-                </div>
-
-                {/* Direct Email Button */}
-                <a
-                  href="mailto:contact@hyunzai.com"
-                  className="w-full py-3 md:py-4 bg-white/5 text-white font-bold rounded-xl hover:bg-white/10 hover:text-foreground transition-all flex items-center justify-center gap-2 group border border-white/10"
-                >
-                  Send Email <FiMail className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                </a>
               </div>
             </form>
           </div>
