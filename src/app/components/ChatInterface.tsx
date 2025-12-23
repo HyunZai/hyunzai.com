@@ -37,7 +37,7 @@ const ChatInterface = () => {
         scrollToBottom();
     }, [messages, isTyping]);
 
-    // 모달이 열려있을 때 ESC 키 입력 시 닫기 및 스크롤 잠금
+    // 모달이 열려있을 때 ESC 키 입력 시 닫기 및 스크롤 잠금 (강력한 잠금)
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
@@ -47,14 +47,18 @@ const ChatInterface = () => {
 
         if (isOpen) {
             window.addEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = 'hidden'; // 스크롤 잠금
+            // html, body 둘 다 잠금 및 important 적용
+            document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+            document.body.style.setProperty('overflow', 'hidden', 'important');
         } else {
-            document.body.style.overflow = 'unset'; // 스크롤 잠금 해제
+            document.documentElement.style.removeProperty('overflow');
+            document.body.style.removeProperty('overflow');
         }
 
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = 'unset'; // 컴포넌트 언마운트 시 잠금 해제
+            document.documentElement.style.removeProperty('overflow');
+            document.body.style.removeProperty('overflow');
         };
     }, [isOpen, closeChat]);
 
@@ -82,9 +86,6 @@ const ChatInterface = () => {
         const resize = (e: MouseEvent) => {
             if (isResizing) {
                 // 오른쪽 패딩(40px)을 고려하여 너비 계산
-                // 모달의 오른쪽 끝은 (window.innerWidth - 40)
-                // 현재 마우스 위치는 e.clientX
-                // 따라서 너비 = (window.innerWidth - 40) - e.clientX
                 const paddingRight = window.innerWidth >= 768 ? 40 : 0;
                 const newWidth = window.innerWidth - paddingRight - e.clientX;
                 
@@ -141,10 +142,11 @@ const ChatInterface = () => {
                 {isOpen && (
                     <Portal>
                         <motion.div
-                            className="fixed inset-0 z-[100] flex items-center justify-center md:justify-end bg-black/60 backdrop-blur-sm p-4 md:p-10"
+                            className="fixed inset-0 z-[100] flex items-center justify-center md:justify-end bg-black/60 backdrop-blur-sm p-4 md:p-10 pointer-events-auto"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()} 
                         >
                             <motion.div
                                 className="relative h-[90vh] bg-[#1c1c22] border-l border-white/10 overflow-hidden flex flex-col shadow-2xl rounded-2xl w-full md:w-auto"
