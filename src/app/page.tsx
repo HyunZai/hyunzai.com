@@ -7,6 +7,7 @@ import Contact from "./components/Contact";
 import Navbar from "./components/Navbar";
 import Career from "./components/Career";
 import FloatingLinks from "./components/FloatingLinks";
+import ChatFloatingButton from "./components/ChatFloatingButton";
 import Footer from "./components/Footer";
 import { useEffect } from "react";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
@@ -59,6 +60,7 @@ export default function Home() {
       </section>
 
       {/* Floating Action Button */}
+      <ChatFloatingButton />
       <FloatingLinks />
       <Footer />
     </main>

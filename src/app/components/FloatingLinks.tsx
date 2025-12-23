@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiLink, FiGithub, FiMail, FiX } from "react-icons/fi";
 import { SiVelog } from "react-icons/si";
+import { useChatStore } from "@/store/useChatStore";
 
 interface LinkItem {
   icon: React.ElementType;
@@ -36,6 +37,7 @@ const links: LinkItem[] = [
 export default function FloatingLinks() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const { hasOpened, isOpen: isChatOpen } = useChatStore();
 
   const toggleOpen = () => setIsOpen(!isOpen);
 
@@ -58,8 +60,11 @@ export default function FloatingLinks() {
   // Fallback for Velog icon if SiVelog is not available or if we want to use a standard icon
   // Note: SiVelog might need 'react-icons/si' package. If it fails, I'll switch to FiBookOpen.
 
+  const isChatVisible = hasOpened && !isChatOpen;
+  const bottomClass = isChatVisible ? "bottom-20 md:bottom-32" : "bottom-6 md:bottom-8";
+
   return (
-    <div ref={containerRef} className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex flex-col items-center gap-1.5 md:gap-4">
+    <div ref={containerRef} className={`fixed ${bottomClass} right-6 md:right-8 z-50 flex flex-col items-center gap-1.5 md:gap-4 transition-all duration-300 ease-in-out`}>
       <AnimatePresence>
         {isOpen && (
           <motion.div
