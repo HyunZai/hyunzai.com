@@ -44,3 +44,5 @@ next-env.d.ts
 
 # user uploads
 # /public/uploads
+
+deploy.tar.gz
