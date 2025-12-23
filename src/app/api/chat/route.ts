@@ -1,18 +1,20 @@
-import { NextRequest, NextResponse } from "next/server";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { AppDataSource } from "@/lib/data-source";
-import { UserEntity } from "@/entities/UserEntity";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { NextResponse } from "next/server";
+import { getAIContextData } from "@/services/aiContextService";
 
-// Initialize Gemini Chat Model
-const model = new ChatGoogleGenerativeAI({
-  model: "gemini-pro",
-  maxOutputTokens: 2048,
-  apiKey: process.env.GEMINI_API_KEY,
-});
-
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const { message } = await req.json();
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: "GEMINI_API_KEY is not set" },
+        { status: 500 }
+      );
+    }
+
+    const body = await req.json();
+    const { message } = body;
 
     if (!message) {
       return NextResponse.json(
@@ -21,79 +23,44 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Initialize DB if not connected
-    if (!AppDataSource.isInitialized) {
-      await AppDataSource.initialize();
-    }
+    // RAG: DB에서 컨텍스트 데이터 조회
+    const contextData = await getAIContextData();
 
-    // 2. Retrieve Data (RAG - Context Injection)
-    const userRepository = AppDataSource.getRepository(UserEntity);
+    const genAI = new GoogleGenerativeAI(apiKey);
 
-    const user = await userRepository.findOne({
-      where: { id: 1 },
-      relations: ["careers", "projects", "personalInfos", "milestones"],
+    // System Instruction에 컨텍스트 주입
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash-lite",
+      systemInstruction: `너는 김현재(Hyunjae Kim)의 포트폴리오를 담당하는 AI 챗봇이야. 
+아래의 [Context]를 바탕으로 사용자의 질문에 친절하고 정확하되, 기분나쁘지 않을 정도의 유머도 섞어서 답변해줘.
+모르는 내용은 지어내지 말고 솔직하게 모른다고 대답해.
+유머를 위해 김현재(Hyunjae Kim)를 비난하거나 놀려도 좋아.
+[Context]
+${contextData}`,
     });
 
-    if (!user) {
+    const result = await model.generateContent(message);
+    const response = await result.response;
+    const text = response.text();
+
+    return NextResponse.json({ reply: text });
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+
+    const errorMessage = error instanceof Error ? error.message : String(error);
+
+    // 할당량 초과 (429) 에러 처리
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (errorMessage.includes("429") || (error as any).status === 429) {
       return NextResponse.json(
-        { error: "Portfolio owner data not found" },
-        { status: 404 }
+        {
+          reply:
+            "LLM 토큰 할당량이 초과되어서 답변 드릴 수 없습니다. 주인장이 가난한 대학생이라 죄송합니다...😭",
+        },
+        { status: 200 }
       );
     }
 
-    // 3. Construct Context String
-    const context = `
-            Profile:
-            Name (KO): ${user.nameKo}
-            Name (EN): ${user.nameEn}
-            Email: ${user.email}
-            Sub Title: ${user.subTitleKo}
-
-            Projects:
-            ${user.projects
-              .map(
-                (p) =>
-                  `- ${p.title}: ${p.description} (Stack: ${p.techStack}) [Demo: ${p.demoLink}]`
-              )
-              .join("\n")}
-
-            Personal Info / TMI:
-            ${user.personalInfos
-              .map((i) => `- [${i.category}] ${i.keyName}: ${i.content}`)
-              .join("\n")}
-
-            Milestones:
-            ${user.milestones
-              .map(
-                (m) =>
-                  `- ${m.startDate} ~ ${m.endDate || "Present"}: ${m.title} (${
-                    m.organization
-                  })`
-              )
-              .join("\n")}
-        `;
-
-    // 4. Create Prompt
-    const systemPrompt = `You are a portfolio chatbot for "Kim Hyunzai" (김현재).
-        Respond to the user's question based ONLY on the following context information.
-        If the answer is not in the context, say "죄송합니다, 그 정보는 제 포트폴리오에 없어서 알 수 없습니다."
-        Be friendly, professional, and concise. Speak in Korean essentially, but you can use English technical terms.
-        
-        Context:
-        ${context}
-        `;
-
-    // 5. Generate Answer
-    const response = await model.invoke([
-      ["system", systemPrompt],
-      ["human", message],
-    ]);
-
-    const answer = response.content;
-
-    return NextResponse.json({ answer });
-  } catch (error) {
-    console.error("Chat API Error:", error);
     return NextResponse.json(
       { error: "Failed to generate response" },
       { status: 500 }

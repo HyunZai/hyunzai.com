@@ -1,55 +1,111 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FiMaximize2, FiSend, FiX } from "react-icons/fi";
-import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-import AlertModal from "./AlertModal";
+import { useState, useEffect, useRef } from "react";
+import { FiMaximize2, FiSend, FiX, FiMessageSquare } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
+import { useChatStore } from "@/store/useChatStore";
+
+const RECOMMENDED_QUESTIONS = [
+    "어떤 기술 스택을 사용하시나요?",
+    "진행했던 프로젝트에 대해 알려주세요.",
+    "연락할 수 있는 방법은 무엇인가요?",
+];
 
 const ChatInterface = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [alertState, setAlertState] = useState<{
-        isOpen: boolean;
-        title: string;
-        message: string;
-        type: "success" | "error";
-    }>({
-        isOpen: false,
-        title: "",
-        message: "",
-        type: "error", // Using 'error' style for alert/notice, or I can use 'success' if preferred. Let's use 'error' (yellow/warning feel) or 'success' (blue). User didn't specify. 'error' has triangle icon -> good for 'under construction'.
-    });
+    const { 
+        isOpen, 
+        openChat, 
+        closeChat, 
+        messages, 
+        inputValue, 
+        setInputValue, 
+        sendMessage, 
+        isTyping 
+    } = useChatStore();
+    
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const handleInputClick = () => {
-        setAlertState({
-            isOpen: true,
-            title: "기능 개발 중",
-            message: "챗봇 기능은 현재 개발 중입니다.\n조금만 기다려주세요!",
-            type: "error", // Yellow warning triangle
-        });
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
-    const closeAlert = () => {
-        setAlertState((prev) => ({ ...prev, isOpen: false }));
-    };
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages, isTyping]);
 
-    // 모달이 열려있을 때 ESC 키 입력 시 닫기
+    // 모달이 열려있을 때 ESC 키 입력 시 닫기 및 스크롤 잠금
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
-                setIsModalOpen(false);
-                closeAlert();
+                closeChat();
             }
         };
 
-        if (isModalOpen || alertState.isOpen) {
+        if (isOpen) {
             window.addEventListener("keydown", handleKeyDown);
+            document.body.style.overflow = 'hidden'; // 스크롤 잠금
+        } else {
+            document.body.style.overflow = 'unset'; // 스크롤 잠금 해제
         }
 
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
+            document.body.style.overflow = 'unset'; // 컴포넌트 언마운트 시 잠금 해제
         };
-    }, [isModalOpen, alertState.isOpen]);
+    }, [isOpen, closeChat]);
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+            sendMessage(inputValue);
+        }
+    };
+
+    const [width, setWidth] = useState(480);
+    const [isResizing, setIsResizing] = useState(false);
+
+    useEffect(() => {
+        // 초기 너비 설정 (화면의 33%, 최대 1200px)
+        const updateWidth = () => {
+            if (typeof window !== 'undefined') {
+                const initialWidth = Math.min(window.innerWidth * 0.33, 1200);
+                if (initialWidth > 320) setWidth(initialWidth);
+            }
+        };
+        updateWidth();
+    }, []);
+
+    useEffect(() => {
+        const resize = (e: MouseEvent) => {
+            if (isResizing) {
+                // 오른쪽 패딩(40px)을 고려하여 너비 계산
+                // 모달의 오른쪽 끝은 (window.innerWidth - 40)
+                // 현재 마우스 위치는 e.clientX
+                // 따라서 너비 = (window.innerWidth - 40) - e.clientX
+                const paddingRight = window.innerWidth >= 768 ? 40 : 0;
+                const newWidth = window.innerWidth - paddingRight - e.clientX;
+                
+                if (newWidth > 320 && newWidth < window.innerWidth * 0.9) {
+                    setWidth(newWidth);
+                }
+            }
+        };
+
+        const stopResizing = () => setIsResizing(false);
+
+        if (isResizing) {
+            window.addEventListener("mousemove", resize);
+            window.addEventListener("mouseup", stopResizing);
+        }
+
+        return () => {
+            window.removeEventListener("mousemove", resize);
+            window.removeEventListener("mouseup", stopResizing);
+        };
+    }, [isResizing]);
 
     return (
         <>
@@ -58,62 +114,63 @@ const ChatInterface = () => {
                 <input
                     type="text"
                     placeholder="Ask me anything..."
-                    className="w-full px-16 py-4 md:py-5 text-white bg-white/10 backdrop-blur-md rounded-full opacity-80 border border-white/20 focus:outline-none focus:border-foreground focus:bg-white/20 transition-all placeholder-white/50 select-text text-sm md:text-xl cursor-pointer"
-                    onClick={handleInputClick}
-                    readOnly // Prevent typing
+                    className="w-full px-16 py-4 md:py-5 text-white bg-white/10 backdrop-blur-md rounded-full opacity-80 border border-white/20 focus:outline-none focus:border-foreground focus:bg-white/20 transition-all placeholder-white/50 select-text text-sm md:text-xl cursor-default"
+                    onClick={() => openChat()}
+                    readOnly
                 />
 
-                {/* Left: Maximize Button - Also triggers alert for consistency if requested, or keep functionality? User said "input field". I'll keep maximize button opening the modal as is, but maybe the modal inside should also alert? 
-                   User said: "입력란을 클릭하면". I will apply to the input.
-                   If I make it readOnly and onClick, it works.
-                */}
                 <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => openChat()}
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 p-3 text-white/70 hover:text-white transition-colors"
                     aria-label="Open chat modal"
                 >
                     <FiMaximize2 className="w-6 h-6" />
                 </button>
 
-                {/* Right: Send Button */}
                 <button
-                    onClick={handleInputClick}
+                    onClick={() => openChat()}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 p-3 text-white/70 hover:text-white transition-colors"
-                    aria-label="Send message"
+                    aria-label="Open chat modal"
                 >
                     <FiSend className="w-6 h-6" />
                 </button>
             </div>
 
-            {/* Chatbot Modal - Using Portal to render at body level */}
+            {/* Chatbot Modal */}
             <AnimatePresence>
-                {isModalOpen && (
+                {isOpen && (
                     <Portal>
                         <motion.div
                             className="fixed inset-0 z-[100] flex items-center justify-center md:justify-end bg-black/60 backdrop-blur-sm p-4 md:p-10"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            onClick={() => setIsModalOpen(false)} // 배경 클릭 시 닫기
                         >
-                            {/* Modal Container */}
                             <motion.div
-                                className="relative w-full max-w-xl h-full bg-background/95 backdrop-blur-xl rounded-2xl overflow-hidden flex flex-col"
+                                className="relative h-[90vh] bg-[#1c1c22] border-l border-white/10 overflow-hidden flex flex-col shadow-2xl rounded-2xl w-full md:w-auto"
+                                style={{ width: typeof window !== 'undefined' && window.innerWidth >= 768 ? width : '100%' }}
                                 initial={{ x: "100%", opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 exit={{ x: "100%", opacity: 0 }}
                                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                                onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫기 방지
+                                onClick={(e) => e.stopPropagation()}
                             >
-
+                                {/* Resize Handle */}
+                                <div
+                                    className="hidden md:block absolute left-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-[#03C3FF]/50 transition-colors z-50 active:bg-[#03C3FF]"
+                                    onMouseDown={() => setIsResizing(true)}
+                                />
                                 {/* Header */}
-                                <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
+                                <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-white/5">
                                     <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                                        <span className="w-2 h-2 rounded-full bg-foreground animate-pulse shadow-[0_0_10px_var(--color-foreground)]" />
-                                        Hyunzai AI
+                                        <div className="relative">
+                                            <span className="block w-2 h-2 rounded-full bg-[#03C3FF]" />
+                                            <span className="absolute inset-0 rounded-full bg-[#03C3FF] animate-ping opacity-75" />
+                                        </div>
+                                        HyunzAI
                                     </h3>
                                     <button 
-                                        onClick={() => setIsModalOpen(false)}
+                                        onClick={() => closeChat()}
                                         className="text-white/50 hover:text-white transition-colors p-1"
                                     >
                                         <FiX className="w-6 h-6" />
@@ -121,28 +178,136 @@ const ChatInterface = () => {
                                 </div>
 
                                 {/* Chat Content Area */}
-                                <div className="flex-1 p-6 text-white overflow-y-auto flex flex-col items-center justify-center bg-gradient-to-b from-transparent to-black/20">
-                                    <div className="text-center space-y-4">
-                                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-4">
-                                            <span className="text-3xl">🤖</span>
+                                <div className="flex-1 p-6 overflow-y-auto bg-gradient-to-b from-transparent to-black/20 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                                    {messages.length === 0 ? (
+                                        <div className="h-full flex flex-col items-center justify-center space-y-8">
+                                            <div className="text-center space-y-4">
+                                                <h4 className="text-2xl md:text-3xl font-bold text-white">무엇이든 물어보세요!</h4>
+                                                <p className="text-gray-400 text-sm md:text-base">
+                                                    저에 대해 궁금한 점을 자연스럽게 물어보세요.
+                                                </p>
+                                            </div>
+                                            
+                                            <div className="w-full max-w-lg space-y-3">
+                                                {RECOMMENDED_QUESTIONS.map((question, index) => (
+                                                    <button
+                                                        key={index}
+                                                        onClick={() => sendMessage(question)}
+                                                        className="w-full text-left px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-[#03C3FF]/30 transition-all group flex items-center justify-between"
+                                                    >
+                                                        <span className="text-gray-300 group-hover:text-white text-base">{question}</span>
+                                                        <FiMessageSquare className="w-5 h-5 text-gray-500 group-hover:text-[#03C3FF] opacity-0 group-hover:opacity-100 transition-all" />
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
-                                        <p className="text-2xl font-bold">무엇이든 물어보세요!</p>
-                                        <p className="text-gray-400 text-sm max-w-xs mx-auto">
-                                            포트폴리오, 기술 스택, 또는 저에 대한 궁금한 점을 자유롭게 질문해주세요.
-                                        </p>
-                                    </div>
+                                    ) : (
+                                        <div className="space-y-6">
+                                            {messages.map((msg) => (
+                                                <div
+                                                    key={msg.id}
+                                                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                                                >
+                                                    <div
+                                                        className={`max-w-[80%] rounded-2xl px-5 py-3 text-sm md:text-base leading-relaxed ${
+                                                            msg.role === "user"
+                                                                ? "bg-[#03C3FF] text-black font-medium rounded-tr-sm"
+                                                                : "bg-white/10 text-gray-100 rounded-tl-sm border border-white/5"
+                                                        }`}
+                                                    >
+                                                        {msg.role === "assistant" ? (
+                                                            <div className="markdown-content space-y-2">
+                                                                <ReactMarkdown
+                                                                    remarkPlugins={[remarkGfm]}
+                                                                    components={{
+                                                                        p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                                                                        ul: ({ children }) => <ul className="list-disc ml-4 mb-2 space-y-1">{children}</ul>,
+                                                                        ol: ({ children }) => <ol className="list-decimal ml-4 mb-2 space-y-1">{children}</ol>,
+                                                                        li: ({ children }) => <li className="pl-1">{children}</li>,
+                                                                        a: ({ href, children }) => (
+                                                                            <a 
+                                                                                href={href} 
+                                                                                target="_blank" 
+                                                                                rel="noopener noreferrer" 
+                                                                                className="text-[#03C3FF] hover:underline break-all"
+                                                                            >
+                                                                                {children}
+                                                                            </a>
+                                                                        ),
+                                                                        code: ({ className, children, ...props }) => {
+                                                                            const isInline = !String(children).includes('\n');
+                                                                            return isInline ? (
+                                                                                <code className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-mono text-[#03C3FF]" {...props}>
+                                                                                    {children}
+                                                                                </code>
+                                                                            ) : (
+                                                                                <div className="bg-black/30 rounded-lg p-3 my-2 overflow-x-auto border border-white/10">
+                                                                                    <code className="block text-sm font-mono text-gray-200 whitespace-pre" {...props}>
+                                                                                        {children}
+                                                                                    </code>
+                                                                                </div>
+                                                                            );
+                                                                        },
+                                                                        blockquote: ({ children }) => (
+                                                                            <blockquote className="border-l-4 border-[#03C3FF]/50 pl-4 py-1 my-2 bg-white/5 rounded-r">
+                                                                                {children}
+                                                                            </blockquote>
+                                                                        ),
+                                                                        strong: ({ children }) => <strong className="font-bold text-white">{children}</strong>,
+                                                                        table: ({ children }) => (
+                                                                            <div className="overflow-x-auto my-4">
+                                                                                <table className="w-full border-collapse border border-white/20 text-sm">
+                                                                                    {children}
+                                                                                </table>
+                                                                            </div>
+                                                                        ),
+                                                                        thead: ({ children }) => <thead className="bg-white/10">{children}</thead>,
+                                                                        tbody: ({ children }) => <tbody>{children}</tbody>,
+                                                                        tr: ({ children }) => <tr className="border-b border-white/10 last:border-0">{children}</tr>,
+                                                                        th: ({ children }) => <th className="px-4 py-2 text-left font-bold text-white border-r border-white/20 last:border-0">{children}</th>,
+                                                                        td: ({ children }) => <td className="px-4 py-2 text-gray-300 border-r border-white/20 last:border-0">{children}</td>,
+                                                                    }}
+                                                                >
+                                                                    {msg.content}
+                                                                </ReactMarkdown>
+                                                            </div>
+                                                        ) : (
+                                                            msg.content
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {isTyping && (
+                                                <div className="flex justify-start">
+                                                    <div className="bg-white/10 rounded-2xl rounded-tl-sm px-5 py-4 flex gap-1.5 items-center">
+                                                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                                                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                                                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" />
+                                                    </div>
+                                                </div>
+                                            )}
+                                            <div ref={messagesEndRef} />
+                                        </div>
+                                    )}
                                 </div>
 
-                                {/* Input Area in Modal */}
-                                <div className="p-4 border-t border-white/5 bg-transparent">
+                                {/* Input Area */}
+                                <div className="p-6 border-t border-white/10 bg-[#1c1c22]">
                                     <div className="relative w-full group">
                                         <input
                                             type="text"
+                                            value={inputValue}
+                                            onChange={(e) => setInputValue(e.target.value)}
+                                            onKeyDown={handleKeyDown}
                                             placeholder="메시지를 입력하세요..."
-                                            className="w-full pl-6 pr-12 py-3 text-white bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 focus:outline-none focus:border-foreground focus:bg-white/10 transition-all placeholder-white/40 shadow-inner text-sm md:text-base"
+                                            className="w-full pl-6 pr-16 py-4 text-white bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 focus:outline-none focus:border-foreground focus:bg-white/20 transition-all placeholder-white/50 text-base"
                                         />
-                                        <button className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-white/70 hover:text-white transition-colors hover:bg-white/10 rounded-full">
-                                            <FiSend className="w-5 h-5" />
+                                        <button 
+                                            onClick={() => sendMessage(inputValue)}
+                                            disabled={!inputValue.trim()}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 p-3 text-white/70 hover:text-white transition-colors disabled:opacity-50"
+                                        >
+                                            <FiSend className="w-6 h-6" />
                                         </button>
                                     </div>
                                 </div>
@@ -151,26 +316,15 @@ const ChatInterface = () => {
                     </Portal>
                 )}
             </AnimatePresence>
-            {/* Alert Modal for Development Notice */}
-            <AlertModal
-                isOpen={alertState.isOpen}
-                onClose={closeAlert}
-                title={alertState.title}
-                message={alertState.message}
-                type={alertState.type}
-            />
         </>
     );
 };
 
-// Simple Portal Component inside file or separate
-import { createPortal } from "react-dom";
-
+// Portal Component
 const Portal = ({ children }: { children: React.ReactNode }) => {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        // Hydration mismatch 방지: 마운트 후 렌더링하도록 딜레이 적용
         const timer = setTimeout(() => setMounted(true), 0);
         return () => clearTimeout(timer);
     }, []);
