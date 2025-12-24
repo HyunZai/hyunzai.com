@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FiSend, FiMail } from "react-icons/fi";
+import { FiSend } from "react-icons/fi";
 import Container from "./Container";
 import AlertModal from "./AlertModal";
 
@@ -79,8 +79,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-20 bg-dark-bg text-white overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-900/20 rounded-full blur-[100px] z-0 pointer-events-none" />
-
       <Container className="relative z-10">
         <motion.div
            initial={{ opacity: 0, y: 100 }}

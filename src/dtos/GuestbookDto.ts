@@ -10,5 +10,6 @@ export class GuestbookDto {
   @Expose()
   content!: string;
 
-
+  @Expose()
+  osName!: string;
 }

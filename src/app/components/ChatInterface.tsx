@@ -159,15 +159,15 @@ const ChatInterface = () => {
                             >
                                 {/* Resize Handle */}
                                 <div
-                                    className="hidden md:block absolute left-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-[#03C3FF]/50 transition-colors z-50 active:bg-[#03C3FF]"
+                                    className="hidden md:block absolute left-0 top-0 bottom-0 w-2 cursor-col-resize hover:bg-foreground/50 transition-colors z-50 active:bg-foreground"
                                     onMouseDown={() => setIsResizing(true)}
                                 />
                                 {/* Header */}
                                 <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-white/5">
                                     <h3 className="text-lg font-bold text-white flex items-center gap-2">
                                         <div className="relative">
-                                            <span className="block w-2 h-2 rounded-full bg-[#03C3FF]" />
-                                            <span className="absolute inset-0 rounded-full bg-[#03C3FF] animate-ping opacity-75" />
+                                            <span className="block w-2 h-2 rounded-full bg-foreground" />
+                                            <span className="absolute inset-0 rounded-full bg-foreground animate-ping opacity-75" />
                                         </div>
                                         HyunzAI
                                     </h3>
@@ -195,10 +195,10 @@ const ChatInterface = () => {
                                                     <button
                                                         key={index}
                                                         onClick={() => sendMessage(question)}
-                                                        className="w-full text-left px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-[#03C3FF]/30 transition-all group flex items-center justify-between"
+                                                        className="w-full text-left px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-foreground/30 transition-all group flex items-center justify-between"
                                                     >
                                                         <span className="text-gray-300 group-hover:text-white text-base">{question}</span>
-                                                        <FiMessageSquare className="w-5 h-5 text-gray-500 group-hover:text-[#03C3FF] opacity-0 group-hover:opacity-100 transition-all" />
+                                                        <FiMessageSquare className="w-5 h-5 text-gray-500 group-hover:text-foreground opacity-0 group-hover:opacity-100 transition-all" />
                                                     </button>
                                                 ))}
                                             </div>
@@ -213,7 +213,7 @@ const ChatInterface = () => {
                                                     <div
                                                         className={`max-w-[80%] rounded-2xl px-5 py-3 text-sm md:text-base leading-relaxed ${
                                                             msg.role === "user"
-                                                                ? "bg-[#03C3FF] text-black font-medium rounded-tr-sm"
+                                                                ? "bg-foreground text-black font-medium rounded-tr-sm"
                                                                 : "bg-white/10 text-gray-100 rounded-tl-sm border border-white/5"
                                                         }`}
                                                     >
@@ -231,7 +231,7 @@ const ChatInterface = () => {
                                                                                 href={href} 
                                                                                 target="_blank" 
                                                                                 rel="noopener noreferrer" 
-                                                                                className="text-[#03C3FF] hover:underline break-all"
+                                                                                className="text-foreground hover:underline break-all"
                                                                             >
                                                                                 {children}
                                                                             </a>
@@ -239,7 +239,7 @@ const ChatInterface = () => {
                                                                         code: ({ className, children, ...props }) => {
                                                                             const isInline = !String(children).includes('\n');
                                                                             return isInline ? (
-                                                                                <code className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-mono text-[#03C3FF]" {...props}>
+                                                                                <code className="bg-white/20 px-1.5 py-0.5 rounded text-sm font-mono text-foreground" {...props}>
                                                                                     {children}
                                                                                 </code>
                                                                             ) : (
@@ -251,7 +251,7 @@ const ChatInterface = () => {
                                                                             );
                                                                         },
                                                                         blockquote: ({ children }) => (
-                                                                            <blockquote className="border-l-4 border-[#03C3FF]/50 pl-4 py-1 my-2 bg-white/5 rounded-r">
+                                                                            <blockquote className="border-l-4 border-foreground/50 pl-4 py-1 my-2 bg-white/5 rounded-r">
                                                                                 {children}
                                                                             </blockquote>
                                                                         ),

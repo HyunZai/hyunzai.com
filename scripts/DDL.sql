@@ -229,11 +229,23 @@ CREATE TABLE IF NOT EXISTS guestbooks (
     nickname        VARCHAR(50) NOT NULL COMMENT '작성자 닉네임',
     content         TEXT NOT NULL COMMENT '방명록 내용',
     ip_address      VARCHAR(45) NULL COMMENT '악성 도배 방지용 IP 주소',
+    os_name         VARCHAR(50) NULL COMMENT '접속 기기 운영체제 정보 (Windows, macOS, Android 등)',
     created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일시',
     PRIMARY KEY (id),
     INDEX idx_created_at (created_at)
 ) COMMENT = '익명 사용자 방명록 관리 테이블';
 
+INSERT INTO hyunzai_db.guestbooks (nickname, content, os_name) VALUES
+('User1', '포트폴리오가 정말 인상적입니다. 특히 3D 효과가 멋지네요!', 'Windows 10'),
+('DevKim', '디자인이 깔끔하고 가독성이 좋습니다. 잘 보고 갑니다.', 'macOS'),
+('Visitor99', '개발자님의 열정이 느껴지는 프로젝트들이네요. 응원합니다!', 'Android'),
+('TechLover', '혹시 사용하신 기술 스택에 대해 여쭤봐도 될까요?', 'iOS'),
+('FrontendDev', '모바일에서도 UI가 깨지지 않고 잘 보이네요. 반응형 처리가 훌륭합니다.', 'Windows 11'),
+('Recruiter_A', 'GitHub 링크 타고 들어와봤는데 코드 스타일이 좋네요.', 'macOS'),
+('Ghost', '터미널 컨셉의 방명록이라니, 아이디어가 너무 참신해요 ㅋㅋ', 'Linux'),
+('JuniorDev', '지나가던 개발자입니다. 자극 많이 받고 갑니다!', 'Android'),
+('Designer_Y', '색감 배치가 아주 세련되었습니다. 다크 모드가 눈이 편하네요.', 'Windows 10'),
+('Newbie', '프로젝트 설명이 구체적이라서 이해하기 쉬웠습니다.', 'iOS');
 
 
 -- 주력 백엔드 기술명 | 숙련도 및 경험 | 챗봇이 강조할 특징
@@ -405,20 +417,17 @@ INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('LIFES
 -- 4. TMI (유머/상식): 챗봇이 엉뚱한 질문을 받았을 때 재치 있게 대답할 재료입니다.
 -- ===================================================
 
--- 로또 1등 되면 할 일 | 개발자다운 상상 | 부유한 삶에 대한 정의
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'RICH_DREAM', 'Lotto, Server Room | 전용 IDC 구축, 람보르기니 | 돈 벌면 서버 랙부터 금으로 도배할 기세', 1);
+-- 로또 1등 당첨 시 계획 | 극도로 현실적인 자산 운용 | 실용주의적 꿈
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'RICH_DREAM', '서울 내 자가 마련, 국산차(현기차) 구입 | 인플레이션을 반영한 냉정한 판단, 실용적 소비 | "로또 1등은 인생 역전이 아니라 주거 안정의 수단일 뿐, 화려한 슈퍼카보다 실용적인 현기차가 최고"', 1);
 
--- 갖고 싶은 초능력 | 개발 효율을 높이는 능력 | 엉뚱한 상상력
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'SUPER_POWER', 'Time Stop, Flying | 마감 기한 멈추기 | 초능력이 생긴다면 마감을 멈추고 싶어함', 1);
+-- 갖고 싶은 초능력 | 순간이동(Teleportation) | 시간 최적화와 스트레스 해소
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'SUPER_POWER', '순간이동 | 출퇴근 시간 0초 달성, 공간 제약 해방 | "길바닥에 버려지는 출퇴근 시간을 내 성장을 위한 시간으로 치환하고 싶음, 지옥철과의 완전한 결별"', 1);
 
--- 좀비 아포칼립스 발생 시 생존 전략 | 개발자 생존 키트 | 뜬금없는 진지함
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'ZOMBIE_APOCALYPSE', 'Laptop, Solar Battery | 좀비 세상 생존법 | 좀비가 와도 노트북은 챙길 거라는 개발자 본능', 1);
+-- 좀비 아포칼립스 생존 전략 | 마트 점령, 자원 통제 | 압도적 추진력
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'ZOMBIE_APOCALYPSE', '근처 마트 정복 및 요새화 | 자원 선점, 공급망 통제 | "도망치기보다 가장 중요한 자원이 있는 곳을 먼저 점령하고 시스템을 구축하는 정복자 스타일"', 1);
 
--- 처음 짠 코드에 대한 기억 | 코딩 시작 계기 | 초보 시절의 실수담
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'FIRST_CODE', 'Hello World, C Language | 추억의 시작 | 처음 "Hello World" 찍었을 때의 감동 회상', 1);
-
--- 오타를 찾는 본인만의 직관 | 사소한 실수에 대한 예민함 | 매의 눈
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'TYPO_EXPERT', 'Semicolon, Parenthesis | 오타 찾기 달인 | 남의 코드 오타는 0.1초 만에 찾아냄', 1);
+-- 처음 짠 코드에 대한 기억 | C# WinForms와의 첫 만남 | 도전과 확신의 시작
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'FIRST_CODE', 'C# WinForms 프로그램 | 코딩에 대한 막연한 두려움과 도전 | "내가 이걸 할 수 있을까? 라는 의구심을 결과물로 깨부순 첫 경험, C# 특유의 구조적 매력에 처음 눈을 뜬 순간"', 1);
 
 -- 카페인 과다 섭취 시 증상 | 커피 중독에 대한 경고 | 몸의 반응
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'COFFEE_LIMIT', 'Jittery, Insomnia | 카페인 과다 부작용 | 너무 마시면 손떨려서 코딩 못 한다고 엄살', 1);
@@ -426,26 +435,14 @@ INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI',
 -- 다크 모드 찬양론 | 라이트 모드에 대한 본인의 생각 | 눈 건강 관리
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'IDE_THEME', 'Dark Mode Only | 눈 보호, 다크 모드 찬양 | 라이트 모드 쓰는 사람 보면 눈 아파함', 1);
 
--- 이상적인 데스크 세팅 | 모니터 개수 | 작업 환경의 중요성
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'DESK_SETTING', 'Dual Monitor, Monitor Arm | 장비 빨, 생산성 폭발 | 모니터는 많을수록 좋다는 다다익선 주의', 1);
+-- 이상적인 데스크 세팅 | 고주사율 모니터, 듀얼 구성 | 환경이 퍼포먼스를 결정한다
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'DESK_SETTING', '27인치 듀얼 모니터, 120Hz 이상 주사율 필수 | 끊김 없는 부드러움, 넓은 작업 시야 | "모니터 주사율은 개발 효율과 게임 피지컬의 기본이다, 장비 투자는 가장 확실한 생산성 향상 전략"', 1);
 
--- 개발 외적인 소소한 재주 | 사람들에게 잘 알려지지 않은 능력 | 의외의 매력
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'SECRET_TALENT', 'Whistle, Rapid Typing | 소소한 장기 | 코딩하면서 휘파람 부는 게 특기', 1);
+-- 개발 외적인 소소한 재주 | 압도적인 악력 | 반전 매력과 성실함의 증거
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'SECRET_TALENT', '압도적인 악력 | 덩치 대비 강한 손아귀 힘 | "맨몸운동과 코어 단련의 결과물, 한 번 잡은 버그든 덤벨이든 절대 놓지 않는 끈기를 상징함"', 1);
 
--- 개발자로서 겪는 직업병적 공포 | 블루스크린 등에 대한 반응 | 소심한 두려움
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'PHOBIA', 'Runtime Error, Blue Screen | 개발자 공포 | 블루스크린만 보면 가슴이 철렁함', 1);
-
--- 인공지능 도구에 대한 의존도 혹은 협업 방식 | 미래 기술에 대한 태도 | 든든함
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'AI_FRIEND', 'ChatGPT, Copilot | 든든한 동료 | "AI는 내 비서이자 스승님"이라고 치켜세움', 1);
-
--- 집중력을 높여주는 간식 | 탕후루나 초콜릿 등에 대한 생각 | 당 보충 타임
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'CODING_SNACK', 'Chocolate, Jelly | 뇌 회전용 간식 | 당 떨어지면 에러율 급상승한다고 주장', 1);
-
--- 술 마시고 짠 코드의 결말 | 음주 코딩 에피소드 | 다음 날의 후회
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'ALCOHOL_TALK', 'Drunk Coding | 취중 코딩의 위험성 | "술 마시고 짠 코드는 다음 날 보면 암호문"', 1);
-
--- 여행 가서 겪은 황당한 일 | 본인만 겪는 특이한 징크스 | 운수 좋은 날
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'TRAVEL_HAP', 'Lost Passport, Rain | 여행 징크스 | 내가 여행만 가면 비가 온다는 슬픈 전설', 1);
+-- 집중력을 높여주는 간식 | 젤리, 쫀디기 | 저작 운동 조절 및 효율적 섭취
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'CODING_SNACK', '젤리, 쫀디기 | 질긴 식감 선호했으나 현재 턱 근육 관리로 조절 중 | "저작 운동이 집중력을 높여주지만, 과도한 발달을 경계해 효율적으로 섭취량을 관리하는 중"', 1);
 
 -- 샤워하다 생각난 기발한 아이디어 | 엉뚱한 장소에서의 깨달음 | 유레카 순간
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'SHOWER_THOUGHT', 'Refactoring, Algorithm | 샤워 중 아이디어 | 비누칠하다가 알고리즘 풀리면 소리 지름', 1);
@@ -453,17 +450,11 @@ INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI',
 -- 본인이 좋아하는 개발자 개그 | 주변 사람들의 반응 | 썰렁함의 미학
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'FAVORITE_JOKE', 'Recursive, Infinite Loop | 개발자 유머 | "재귀 함수를 설명하려면 재귀 함수를 알아야 해"', 1);
 
--- PC 조립이나 수리 능력 | 기계를 만질 때의 쾌감 | 하드웨어 덕후 기질
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'HARDWARE_SKILL', 'PC Assembly, Cleaning | 하드웨어 관리 | 본체 뜯어서 먼지 청소할 때 평온함을 느낌', 1);
+-- 하드웨어 정비 능력 | 지인들의 전담 수리기사 | 문제 해결의 희열
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'HARDWARE_SKILL', 'PC 조립 및 트러블슈팅 | 주변 지인 전담 컴퓨터 수리기사 | "복잡하게 꼬인 하드웨어 문제를 해결하고 시스템을 정상화할 때 정복감을 느낌, 타인에게 기술적 신뢰를 받는 존재"', 1);
 
--- 가방 속에 항상 들어있는 것 | 외출 시 필수템 | 준비된 개발자
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'BAG_CONTENTS', 'Dongle, Charger, Laptop | 가방 속 보물 | 언제 어디서든 코딩 가능한 풀세팅 장착', 1);
-
--- 세상에 나왔으면 하는 꿈의 앱 | 본인의 상상력의 결정체 | 미래에 대한 기대
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'APP_WISH', 'Auto-Coding App | 꿈의 앱 | 생각만 하면 코드가 짜지는 앱이 나오길 기도', 1);
-
--- 본인만의 시그니처 인사말 | 만남의 방식 | 첫인상에 대한 생각
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'GREETING', 'Hello, World! | 만남의 인사 | 인사할 때 "Hello World"라고 안 하면 서운함', 1);
+-- 가방 속 필수 아이템 | 완벽한 대비를 위한 보부상 스타일 | 준비된 통솔자
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('TMI', 'BAG_CONTENTS', '맥북, 아이패드, 우산, 핸드크림, 수분크림, 물티슈 등 | 모든 변수를 통제하는 풀세팅 | "언제 어디서든 업무와 자기관리가 가능하도록 모든 상황을 대비한 완벽한 보부상 장비 장착"', 1);
 
 -- ===================================================
 -- 5. ETC (기타/철학): 개발에 대한 깊은 생각이나 챗봇의 마무리를 돕는 정보입니다.
@@ -475,26 +466,11 @@ INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC',
 -- 깔끔한 코드에 대한 본인의 강박 | 예술로서의 프로그래밍 | 장인 정신
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'CLEAN_CODE', 'Art, Craftsmanship | 예술로서의 코드 | 코드는 읽기 쉬워야 한다는 강박적 사랑', 1);
 
--- 오픈소스 기여 경험 혹은 생각 | 나눔의 가치 | 생태계에 대한 감사
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'OPEN_SOURCE', 'Contribution, GitHub | 공유의 미학 | 남의 코드 고쳐줄 때가 제일 보람차다고 함', 1);
-
--- 옛날 웹 환경에 대한 기억 | IE 시절의 고통 회고 | 지금의 편리함에 감사
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'WEB_HISTORY', 'Internet, IE6 | 과거의 고통 | IE6 시절 고생담 풀기 시작하면 밤샘 가능', 1);
-
--- 세미콜론 하나 때문에 벌어진 대참사 | 개발자라면 누구나 공감할 에피소드 | 꼼꼼함의 필요성
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'SEMICOLON', 'Missing Semicolon | 사소한 복수 | 세미콜론 하나 때문에 밤샌 기억 공유', 1);
-
--- 변수 이름을 짓는 것이 어려운 이유 | 본인만의 네이밍 규칙 | 고뇌의 시간
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'VARIABLE_NAME', 'Naming is hard | 작명의 고통 | 변수 이름 짓는 게 알고리즘 짜기보다 어렵다고 고백', 1);
-
--- 막힐 때의 구세주 | 복사 붙여넣기에 대한 철학 | 지식의 공유 방식
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'STACKOVERFLOW', 'Life Savior, Copy Paste | 구원의 손길 | "내 지식의 80%는 스택오버플로우에서 왔다"', 1);
+-- 변수 이름 짓기 철학 | AI 활용을 통한 생산성 혁신 | 효율적인 네이밍 전략
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'VARIABLE_NAME', 'AI(ChatGPT/Copilot) 기반 네이밍 | 명확한 의미 전달과 시간 단축 | "이름 짓는 고뇌는 AI에게 맡기고, 나는 더 고차원적인 비즈니스 로직 설계에 집중한다"', 1);
 
 -- 오프라인 환경에서의 불안감 | 인터넷 없이 살 수 있는 시간 | 가끔은 아날로그로
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'OFFLINE_MODE', 'Nature, No Wi-Fi | 가끔은 아날로그 | 인터넷 안 되는 곳에서 불안해하다가 곧 적응함', 1);
-
--- 재택근무의 장단점 | 집에서 일할 때의 복장 | 생산성 차이
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'REMOTE_WORK', 'Pajamas, Zoom | 재택근무의 환상 | 위는 셔츠, 아래는 잠옷 입고 회의해본 적 있음', 1);
 
 -- 코드 리뷰를 대하는 성숙한 자세 | 비판을 성장의 밑거름으로 삼는 법 | 상호 존중
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'CODE_REVIEW', 'Feedback, Growth | 코드 리뷰의 중요성 | "내 코드를 까주세요, 그래야 성장합니다"', 1);
@@ -502,17 +478,14 @@ INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC',
 -- 개발 공부하다 딴짓하는 과정 | 알고리즘의 유혹 | 의식의 흐름
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'YOUTUBE_ALGO', 'Coding Tutorial, Cat Video | 유튜브 알고리즘 | 코딩 강의 보다가 고양이 영상으로 끝남', 1);
 
--- 기술 행사 참여 목적 | 네트워킹의 즐거움 | 굿즈 수집 열정
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'CONFERENCE', 'Networking, Swag | 컨퍼런스 굿즈 | 티셔츠와 스티커 받으러 컨퍼런스 감', 1);
-
 -- '나중에 고치지 뭐' 하고 남겨둔 코드들의 운명 | 기술 부채의 무서움 | 정기적인 청소
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'TECH_DEBT', 'Later, TODO | 기술 부채의 공포 | "// TODO: 나중에 수정"은 영원히 안 고쳐짐', 1);
 
 -- 페어 프로그래밍 경험 | 누군가와 함께 코드를 짤 때의 느낌 | 시너지 효과
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'PAIR_CODING', 'Collaboration, Fun | 짝 프로그래밍 | 둘이 짜면 버그도 반으로 줄어든다고 믿음', 1);
 
--- 검은 화면에 흰 글자(CLI)가 주는 멋 | 마우스 없이 작업하는 쾌감 | 효율성
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'CLI_VS_GUI', 'Terminal, Command | 터미널 간지 | 검은 화면에 흰 글자 칠 때 자신이 멋져 보임', 1);
+-- CLI vs GUI | 실용주의적 선택 | 효율성의 승리
+INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'CLI_VS_GUI', 'GUI 선호 (실용주의) | CLI의 멋보다 GUI의 직관적 편의성 중시 | "CLI가 섹시해 보일 순 있지만, 업무 효율과 속도면에서는 GUI가 압승이다. 도구는 편해야 도구다"', 1);
 
 -- 내 서비스 어딘가에 숨겨둔 비밀 | 발견해주길 바라는 마음 | 소소한 재미
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'EGG_EASTER', 'Hidden Message | 코드 속 이스터에그 | 내가 짠 코드 어딘가에 숨겨진 메시지가 있을지도?', 1);
@@ -522,9 +495,6 @@ INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC',
 
 -- 본인의 홈 카페 세팅 | 커피를 내리는 시간의 명상 | 가장 소중한 가전
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'COFFEE_MACHINE', 'Espresso, Capsule | 홈 카페 | 사무실에서 가장 중요한 장비는 커피 머신임', 1);
-
--- 책상 위 작은 식물 | 돌보기 쉬운 식물 선호도 | 초록색이 주는 평온
-INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'DESK_PLANT', 'Cactus, Succulent | 반려 식물 | 물 안 줘도 잘 자라는 선인장이 최고의 동료', 1);
 
 -- 방문자에게 전하는 마지막 응원 | 긍정적인 마무리 인사 | 챗봇의 따뜻함
 INSERT INTO personal_infos (category, key_name, content, user_id) VALUES ('ETC', 'FINAL_MESSAGE', 'Happy Coding, Success | 마지막 인사 | "여러분도 즐겁게 코딩하고 부자 되세요!"', 1);
