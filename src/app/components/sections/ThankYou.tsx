@@ -2,8 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import Container from "./Container";
-import GuestbookModal from "./GuestbookModal";
+import Container from "../layout/Container";
+import GuestbookModal from "../features/guestbook/GuestbookModal";
 
 export default function ThankYou() {
   const [isModalOpen, setIsModalOpen] = useState(false);

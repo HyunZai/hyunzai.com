@@ -1,17 +1,17 @@
 "use client";
 
-import Intro from "./components/Intro";
-import About from "./components/About";
-import Projects from "./components/Projects";
-import Contact from "./components/Contact";
-import Navbar from "./components/Navbar";
-import Career from "./components/Career";
-import FloatingLinks from "./components/FloatingLinks";
-import ChatFloatingButton from "./components/ChatFloatingButton";
-import Footer from "./components/Footer";
+import Intro from "./components/sections/Intro";
+import About from "./components/sections/About";
+import Projects from "./components/sections/Projects";
+import Contact from "./components/sections/Contact";
+import Navbar from "./components/layout/Navbar";
+import Career from "./components/sections/Career";
+import FloatingLinks from "./components/layout/FloatingLinks";
+import ChatFloatingButton from "./components/features/chat/ChatFloatingButton";
+import Footer from "./components/layout/Footer";
 import { useEffect } from "react";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
-import ThankYou from "./components/ThankYou";
+import ThankYou from "./components/sections/ThankYou";
 
 export default function Home() {
   const { fetchPortfolioData } = usePortfolioStore();

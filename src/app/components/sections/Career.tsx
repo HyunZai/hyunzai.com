@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Container from "./Container";
+import Container from "../layout/Container";
 import { FiCalendar, FiBriefcase, FiCheckCircle } from "react-icons/fi";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 
