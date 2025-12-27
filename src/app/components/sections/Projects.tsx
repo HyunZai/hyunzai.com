@@ -2,9 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import ProjectCarousel from "./ProjectCarousel";
+import ProjectCarousel from "../ui/ProjectCarousel";
 import { FiGithub, FiExternalLink } from "react-icons/fi";
-import Container from "./Container";
+import Container from "../layout/Container";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 
 export default function Projects() {

@@ -1,13 +1,13 @@
 "use client";
 
-import Container from "./Container";
+import Container from "../layout/Container";
 import Image from "next/image";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 import { FaUser } from "react-icons/fa";
-import GitHubContributions from "./GitHubContributions";
-import Timeline from "./Timeline";
+import GitHubContributions from "../ui/GitHubContributions";
+import Timeline from "../ui/Timeline";
 
 export default function About() {
   const { store } = usePortfolioStore();

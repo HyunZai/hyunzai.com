@@ -1,11 +1,11 @@
 "use client";
 
-import ParticlesBackground from "./ParticlesBackground";
-import TypingIntro from "./TypingIntro";
-import HoverText from "./HoverText";
-import ChatInterface from "./ChatInterface";
-import Container from "./Container";
-import ScrollIndicator from "./ScrollIndicator";
+import ParticlesBackground from "../layout/ParticlesBackground";
+import TypingIntro from "../ui/TypingIntro";
+import HoverText from "../ui/HoverText";
+import ChatInterface from "../features/chat/ChatInterface";
+import Container from "../layout/Container";
+import ScrollIndicator from "../layout/ScrollIndicator";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 
 export default function Intro() {

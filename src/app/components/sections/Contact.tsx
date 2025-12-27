@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FiSend } from "react-icons/fi";
-import Container from "./Container";
-import AlertModal from "./AlertModal";
+import Container from "../layout/Container";
+import AlertModal from "../ui/AlertModal";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
