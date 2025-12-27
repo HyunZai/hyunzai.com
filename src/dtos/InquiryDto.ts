@@ -1,17 +1,20 @@
 import { Expose, Transform } from "class-transformer";
 
-export class GuestbookDto {
+export class InquiryDto {
   @Expose()
-  id!: string;
+  id!: number;
 
   @Expose()
-  nickname!: string;
+  name!: string;
 
   @Expose()
-  content!: string;
+  email!: string;
 
   @Expose()
-  osName!: string;
+  message!: string;
+
+  @Expose()
+  isResponded!: boolean;
 
   @Expose()
   @Transform(
