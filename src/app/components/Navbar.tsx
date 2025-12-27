@@ -42,9 +42,9 @@ export default function Navbar() {
       } else {
         setIsVisible(false);
       }
-
       // 2. Active Section Check
-      const sections = ["intro", "about", "career", "projects", "contact"];
+      const sections = ["intro", "about", "career", "projects", "thankyou", "contact"];
+
       const scrollPosition = window.scrollY + window.innerHeight / 3; // 뷰포트 상단 1/3 지점 기준
 
       for (const section of sections) {
@@ -149,7 +149,7 @@ export default function Navbar() {
                 className="md:hidden absolute top-full right-4 mt-2 w-48 bg-background/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl overflow-hidden"
               >
                 <div className="flex flex-col py-2">
-                  {["intro", "about", "career", "projects", "contact"].map((item) => (
+                  {["intro", "about", "career", "projects", "guestbook", "contact"].map((item) => (
                     <button
                       key={item}
                       onClick={() => {

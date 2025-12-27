@@ -11,6 +11,7 @@ import ChatFloatingButton from "./components/ChatFloatingButton";
 import Footer from "./components/Footer";
 import { useEffect } from "react";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
+import ThankYou from "./components/ThankYou";
 
 export default function Home() {
   const { fetchPortfolioData } = usePortfolioStore();
@@ -22,12 +23,12 @@ export default function Home() {
     const hash = window.location.hash;
     if (hash) {
       const targetId = decodeURIComponent(hash.substring(1)).toLowerCase();
-      
+
       setTimeout(() => {
         const element = document.getElementById(targetId);
         if (element) {
           window.scrollTo({
-            top: element.offsetTop - 20,
+            top: element.offsetTop - (targetId === "thankyou" ? 90 : 25),
             behavior: "smooth",
           });
         }
@@ -53,6 +54,10 @@ export default function Home() {
 
       <section id="projects">
         <Projects />
+      </section>
+
+      <section id="thankyou">
+        <ThankYou />
       </section>
 
       <section id="contact" className="bg-gradient-to-t from-black to-transparent">
