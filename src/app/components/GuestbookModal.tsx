@@ -18,7 +18,7 @@ export default function GuestbookModal({ isOpen, onClose }: GuestbookModalProps)
     inputMessage,
     nickname,
     sessionLogs,
-    isLoading, // 로딩 상태 표시를 위해 추가
+    isLoading,
     setInputMessage,
     setNickname,
     submitMessage,
@@ -126,22 +126,22 @@ export default function GuestbookModal({ isOpen, onClose }: GuestbookModalProps)
               }
             `}</style>
 
-            <div 
+            <div
               className="bg-[#1C1C22]/95 border border-white/10 w-full max-w-4xl h-[80vh] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm md:text-base relative backdrop-blur-md"
             >
               {/* Header */}
               <div className="h-10 bg-[#1C1C22] flex items-center px-4 border-b border-white/10 shrink-0 relative">
                 <div className="flex gap-2 items-center">
                   <div className="relative">
-                     <span className="block w-3 h-3 rounded-full bg-foreground" />
-                     <span className="absolute inset-0 rounded-full bg-foreground animate-ping opacity-75" />
+                    <span className="block w-3 h-3 rounded-full bg-foreground" />
+                    <span className="absolute inset-0 rounded-full bg-foreground animate-ping opacity-75" />
                   </div>
                 </div>
                 <div className="absolute left-1/2 -translate-x-1/2 text-gray-500 text-xs flex items-center gap-2 font-mono">
                   <FiTerminal />
                   <span>guestbook — bash</span>
                 </div>
-                <button 
+                <button
                   onClick={onClose}
                   className="absolute right-4 text-gray-500 hover:text-white transition-colors"
                 >
@@ -151,7 +151,7 @@ export default function GuestbookModal({ isOpen, onClose }: GuestbookModalProps)
 
               {/* Terminal Body */}
               <div className="flex-1 overflow-y-auto p-4 md:p-6 text-gray-300 terminal-scrollbar">
-                
+
                 {/* Welcome Message */}
                 <div className="mb-6 opacity-70 border-b border-gray-800 pb-4">
                   <p>Last login: {new Date().toDateString()} on ttys001</p>
@@ -162,43 +162,45 @@ export default function GuestbookModal({ isOpen, onClose }: GuestbookModalProps)
                 {/* Log List */}
                 {/* Log List */}
                 <div className="space-y-4 font-mono text-sm md:text-base">
-                  
+
                   {/* 통합된 Session Logs (API Data + New Interactions) */}
                   {sessionLogs.map((msg) => (
                     <div key={msg.id} className="mb-3 leading-relaxed break-all">
                       {/* 사용자 입력 프롬프트 */}
-                      <div className="flex justify-between items-baseline mb-1">
-                        <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap justify-between items-baseline mb-1 gap-x-2">
+                        <div className="flex flex-wrap items-center gap-x-2 text-sm md:text-base">
                           {msg.type !== 'system' && (
                             <span className="text-gray-500 opacity-50 text-xs">
                               {getOSIcon(msg.os)}
                             </span>
                           )}
-                          <span className={msg.type === 'system' ? "text-yellow-400" : "text-foreground"}>
-                            {msg.type === 'system' ? 'root@system' : `${msg.nickname}@hyunzai.com`}
-                          </span>
-                          <span className="text-white">:</span>
-                          <span className="text-gray-500">~</span>
-                          <span className="text-white">$</span>
+                          <div className="flex flex-wrap items-center gap-x-1">
+                            <span className={msg.type === 'system' ? "text-yellow-400" : "text-foreground"}>
+                              {msg.type === 'system' ? 'root@system' : `${msg.nickname}@hyunzai.com`}
+                            </span>
+                            <span className="text-white">:</span>
+                            <span className="text-gray-500">~</span>
+                            <span className="text-white">$</span>
+                          </div>
                         </div>
-                        <span className="text-[10px] text-gray-600 shrink-0 ml-2">{msg.createdAt}</span>
+                        <span className="text-[10px] text-gray-600 shrink-0 ml-auto">{msg.createdAt}</span>
                       </div>
 
                       {/* 메시지 내용 (Output) */}
                       <div className={`flex ${(msg.type === 'system' || msg.type === 'info') ? 'text-yellow-100/90' : 'text-gray-300'}`}>
-                        <span className="text-gray-600 mr-2 select-none pt-1">
+                        <span className="text-gray-600 mr-2 select-none pt-1 shrink-0">
                           <FiCornerDownRight size={14} />
                         </span>
-                        <span className="whitespace-pre-wrap">{msg.content}</span>
+                        <span className="whitespace-pre-wrap break-words w-full">{msg.content}</span>
                       </div>
                     </div>
                   ))}
-                  
+
                   {/* Loading Indicator */}
                   {isLoading && (
-                     <div className="text-gray-500 text-xs italic">Fetching data...</div>
+                    <div className="text-gray-500 text-xs italic">Fetching data...</div>
                   )}
-                  
+
                   {/* Anchor for auto scroll */}
                   <div ref={messagesEndRef} />
                 </div>
@@ -206,36 +208,42 @@ export default function GuestbookModal({ isOpen, onClose }: GuestbookModalProps)
 
               {/* Footer (Fixed Input) */}
               <div className="p-4 bg-[#1C1C22] border-t border-white/10 shrink-0 font-mono text-sm md:text-base">
-                 <form onSubmit={handleSubmit} className="flex flex-wrap items-center gap-2">
-                   {/* ... (입력 폼 유지) ... */}
-                    <div className="flex items-center gap-1 shrink-0">
+                <form onSubmit={handleSubmit} className="flex items-center gap-x-2">
+                  {/* Prompt Section */}
+                  <div className="flex items-center gap-1 shrink-0 bg-[#1C1C22] z-10">
+                    <div className="flex items-center">
                       <input
                         type="text"
                         placeholder="nickname"
+                        maxLength={12}
                         value={nickname}
                         onChange={(e) => setNickname(e.target.value)}
-                        className="w-24 bg-transparent border-b border-gray-700 focus:border-foreground outline-none text-foreground text-center placeholder-gray-700 transition-colors"
+                        className="w-20 md:w-24 bg-transparent border-b border-gray-700 focus:border-foreground outline-none text-foreground text-center placeholder-gray-700 transition-colors text-[16px] md:text-sm"
                       />
-                      <span className="text-foreground">@hyunzai.com</span>
+                      <span className="text-foreground text-xs md:text-sm">@hyunzai.com</span>
                     </div>
-                    <span className="text-white">:</span>
-                    <span className="text-gray-500">~</span>
-                    <span className="text-white">$</span>
-                   
-                   <div className="flex-1 min-w-[200px] flex items-center">
-                     <input
-                       type="text"
-                       value={inputMessage}
-                       onChange={(e) => setInputMessage(e.target.value)}
-                       className="w-full bg-transparent border-none outline-none text-white focus:ring-0 p-0 placeholder-gray-700"
-                       placeholder="Enter your message..."
-                       autoFocus
-                     />
-                     {/* Cursor */}
-                     <span className="w-2 h-4 bg-white/50 animate-pulse ml-1" />
-                   </div>
-                   <button type="submit" className="hidden" />
-                 </form>
+                    <div className="flex items-center gap-1 text-xs md:text-sm">
+                        <span className="text-white">:</span>
+                        <span className="text-gray-500">~</span>
+                        <span className="text-white">$</span>
+                    </div>
+                  </div>
+
+                  {/* Input Section */}
+                  <div className="flex-1 min-w-0 flex items-center">
+                    <input
+                      type="text"
+                      value={inputMessage}
+                      onChange={(e) => setInputMessage(e.target.value)}
+                      className="w-full bg-transparent border-none outline-none text-white focus:ring-0 p-0 placeholder-gray-700 min-w-[50px] text-[16px]"
+                      placeholder="Enter your message..."
+                      autoFocus
+                    />
+                    {/* Cursor */}
+                    <span className="w-2 h-4 bg-white/50 animate-pulse ml-1" />
+                  </div>
+                  <button type="submit" className="hidden" />
+                </form>
               </div>
             </div>
           </motion.div>

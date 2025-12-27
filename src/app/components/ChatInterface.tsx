@@ -302,7 +302,7 @@ const ChatInterface = () => {
                                             onChange={(e) => setInputValue(e.target.value)}
                                             onKeyDown={handleKeyDown}
                                             placeholder="메시지를 입력하세요..."
-                                            className="w-full pl-6 pr-16 py-4 text-white bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 focus:outline-none focus:border-foreground focus:bg-white/20 transition-all placeholder-white/50 text-base"
+                                            className="w-full pl-6 pr-16 py-4 text-white bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 focus:outline-none focus:border-foreground focus:bg-white/20 transition-all placeholder-white/50 text-[16px]"
                                         />
                                         <button 
                                             onClick={() => sendMessage(inputValue)}
