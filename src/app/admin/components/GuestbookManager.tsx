@@ -27,14 +27,14 @@ export default function GuestbookManager({ initialEntries }: { initialEntries: G
             <th className="py-4 px-6 text-left text-xs font-semibold uppercase tracking-wider">날짜</th>
             <th className="py-4 px-6 text-left text-xs font-semibold uppercase tracking-wider">닉네임</th>
             <th className="py-4 px-6 text-left text-xs font-semibold uppercase tracking-wider">내용</th>
-            <th className="py-4 px-6 text-left text-xs font-semibold uppercase tracking-wider">OS</th>
-            <th className="py-4 px-6 text-left text-xs font-semibold uppercase tracking-wider">관리</th>
+            <th className="py-4 px-6 text-center text-xs font-semibold uppercase tracking-wider">OS</th>
+            <th className="py-4 px-6 text-center text-xs font-semibold uppercase tracking-wider">관리</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-neutral-800">
           {entries.map((entry: GuestbookDto) => (
             <tr key={entry.id} className="hover:bg-black/20 transition-colors group">
-              <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap">
+              <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap" suppressHydrationWarning>
                 {new Date(entry.createdAt).toLocaleString()}
               </td>
               <td className="py-4 px-6 text-sm text-[#03C3FF] whitespace-nowrap font-medium">
@@ -43,10 +43,10 @@ export default function GuestbookManager({ initialEntries }: { initialEntries: G
               <td className="py-4 px-6 text-sm text-gray-300 max-w-xs truncate" title={entry.content}>
                 {entry.content}
               </td>
-              <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap">
+              <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap text-center">
                 {entry.osName || '-'}
               </td>
-              <td className="py-4 px-6 text-sm">
+              <td className="py-4 px-6 text-sm text-center">
                 <button 
                     onClick={() => handleDelete(entry.id)}
                     className="text-gray-500 hover:text-red-400 p-2 rounded-full hover:bg-neutral-800 transition-all duration-200"

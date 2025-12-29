@@ -8,6 +8,7 @@ import { FaTrash } from 'react-icons/fa';
 export default function InquiryList({ initialInquiries }: { initialInquiries: InquiryDto[] }) {
   const [inquiries, setInquiries] = useState<InquiryDto[]>(initialInquiries);
 
+
   const handleDelete = async (id: number) => {
     if (confirm('정말로 이 문의를 삭제하시겠습니까?')) {
         const res = await deleteInquiry(id);
@@ -46,13 +47,13 @@ export default function InquiryList({ initialInquiries }: { initialInquiries: In
             <th className="py-4 px-6 text-left text-xs font-semibold uppercase tracking-wider">이메일</th>
             <th className="py-4 px-6 text-left text-xs font-semibold uppercase tracking-wider">내용</th>
             <th className="py-4 px-6 text-center text-xs font-semibold uppercase tracking-wider">답변여부</th>
-            <th className="py-4 px-6 text-left text-xs font-semibold uppercase tracking-wider">관리</th>
+            <th className="py-4 px-6 text-center text-xs font-semibold uppercase tracking-wider">관리</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-neutral-800">
-          {inquiries.map((inquiry: InquiryDto) => ( // Use 'inquiry' here
+          {inquiries.map((inquiry: InquiryDto) => (
             <tr key={inquiry.id} className="hover:bg-black/20 transition-colors group">
-              <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap">
+              <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap" suppressHydrationWarning>
                 {new Date(inquiry.createdAt).toLocaleString()}
               </td>
               <td className="py-4 px-6 text-sm text-gray-200 whitespace-nowrap font-medium">{inquiry.name}</td>
@@ -78,7 +79,7 @@ export default function InquiryList({ initialInquiries }: { initialInquiries: In
                   />
                 </div>
               </td>
-              <td className="py-4 px-6 text-sm">
+              <td className="py-4 px-6 text-sm text-center">
                 <button 
                   onClick={() => handleDelete(inquiry.id)}
                   className="text-gray-500 hover:text-red-400 p-2 rounded-full hover:bg-neutral-800 transition-all duration-200"
