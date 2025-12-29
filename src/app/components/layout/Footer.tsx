@@ -36,6 +36,10 @@ export default function Footer() {
     }
   };
 
+  const handleGithubClick = () => {
+    window.open('https://github.com/hyunzai/hyunzai.com', '_blank');
+  };
+
   return (
     <footer className="relative z-10 w-full py-8 text-center text-gray-400 text-sm bg-background">
       <div
@@ -45,6 +49,7 @@ export default function Footer() {
         onMouseLeave={handleEnd}
         onTouchStart={handleStart}
         onTouchEnd={handleEnd}
+        onClick={handleGithubClick}
       >
         © {new Date().getFullYear()} Made by Hyunzai
       </div>

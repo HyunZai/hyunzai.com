@@ -11,7 +11,7 @@ export default async function AdminPage() {
   return (
     <div className="min-h-screen bg-[#1C1C22] text-white p-8 pt-24">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-light mb-8 border-b border-gray-800 pb-4">
+        <h1 className="text-6xl font-light mb-8 pb-4">
           Admin <span className="text-[#03C3FF] font-bold">Dashboard</span>
         </h1>
         
