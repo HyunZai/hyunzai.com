@@ -85,7 +85,7 @@ export default function AdminLoginModal({
 
           {/* Modal Content */}
           <motion.div
-            className="relative w-full max-w-sm overflow-hidden rounded-2xl bg-[#1C1C22] border border-white/10 shadow-2xl"
+            className="relative w-full max-w-sm overflow-hidden rounded-2xl bg-background border border-white/10 shadow-2xl"
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -102,7 +102,7 @@ export default function AdminLoginModal({
 
             <div className="p-8 flex flex-col items-center">
               {/* Icon */}
-              <div className="mb-6 p-4 rounded-full bg-[#03C3FF]/10 text-[#03C3FF]">
+              <div className="mb-6 p-4 rounded-full bg-foreground/10 text-foreground">
                 <FiLock className="w-8 h-8" />
               </div>
 
@@ -126,7 +126,7 @@ export default function AdminLoginModal({
                       setError("");
                     }}
                     placeholder="패스워드 입력"
-                    className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#03C3FF] focus:ring-1 focus:ring-[#03C3FF] transition-all"
+                    className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-foreground focus:ring-1 focus:ring-foreground transition-all"
                     disabled={isLoading}
                   />
                   {error && (
@@ -146,7 +146,7 @@ export default function AdminLoginModal({
                   className={`w-full py-3 rounded-xl font-semibold text-white transition-all transform active:scale-[0.98] ${
                     isLoading
                       ? "bg-gray-700 cursor-not-allowed"
-                      : "bg-[#03C3FF] hover:bg-[#03C3FF]/90 shadow-lg shadow-[#03C3FF]/25"
+                      : "bg-foreground hover:bg-foreground/90 shadow-lg shadow-foreground/25"
                   }`}
                 >
                   {isLoading ? (

@@ -78,8 +78,8 @@ export default function PortfolioManager() {
     <div className="space-y-8 pb-24">
       
       {/* 1. Intro Section Card */}
-      <section className="bg-[#1c1c22] rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6 md:p-8">
-        <h3 className="text-xl font-semibold text-white mb-6 border-l-4 border-[#03C3FF] pl-4">Intro 섹션 설정</h3>
+      <section className="bg-background rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6 md:p-8">
+        <h3 className="text-xl font-semibold text-white mb-6 border-l-4 border-foreground pl-4">Intro</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <div className="grid grid-cols-2 gap-6 md:col-span-2">
@@ -89,7 +89,7 @@ export default function PortfolioManager() {
                     type="text"
                     value={introData.nameKr}
                     onChange={(e) => setIntroData({ ...introData, nameKr: e.target.value })}
-                    className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#03C3FF] transition-all focus:ring-1 focus:ring-[#03C3FF]/20"
+                    className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20"
                     placeholder="예: 김현재"
                     />
                 </div>
@@ -99,7 +99,7 @@ export default function PortfolioManager() {
                     type="text"
                     value={introData.nameEn}
                     onChange={(e) => setIntroData({ ...introData, nameEn: e.target.value })}
-                    className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#03C3FF] transition-all focus:ring-1 focus:ring-[#03C3FF]/20"
+                    className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20"
                     placeholder="예: HyunZai Kim"
                     />
                 </div>
@@ -110,7 +110,7 @@ export default function PortfolioManager() {
                 type="text"
                 value={introData.subtitleKr}
                 onChange={(e) => setIntroData({ ...introData, subtitleKr: e.target.value })}
-                className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#03C3FF] transition-all focus:ring-1 focus:ring-[#03C3FF]/20"
+                className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20"
                 placeholder="예: 풀스택 개발자"
                 />
             </div>
@@ -120,7 +120,7 @@ export default function PortfolioManager() {
                 type="text"
                 value={introData.subtitleEn}
                 onChange={(e) => setIntroData({ ...introData, subtitleEn: e.target.value })}
-                className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#03C3FF] transition-all focus:ring-1 focus:ring-[#03C3FF]/20"
+                className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20"
                 placeholder="예: Full Stack Developer"
                 />
             </div>
@@ -128,8 +128,8 @@ export default function PortfolioManager() {
       </section>
 
       {/* 2. About Section Card */}
-      <section className="bg-[#1c1c22] rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6 md:p-8">
-        <h3 className="text-xl font-semibold text-white mb-6 border-l-4 border-[#03C3FF] pl-4">About 섹션 설정</h3>
+      <section className="bg-background rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6 md:p-8">
+        <h3 className="text-xl font-semibold text-white mb-6 border-l-4 border-foreground pl-4">About</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {/* Introduction - Left (2/3) */}
@@ -139,44 +139,46 @@ export default function PortfolioManager() {
                     <textarea
                         value={aboutData.introduction}
                         onChange={(e) => setAboutData({ ...aboutData, introduction: e.target.value })}
-                        className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#03C3FF] transition-all focus:ring-1 focus:ring-[#03C3FF]/20 resize-none flex-grow min-h-[220px]"
+                        className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20 resize-none flex-grow min-h-[220px]"
                         placeholder="자기소개를 입력하세요..."
                     />
                 </div>
             </div>
 
             {/* Profile Image - Right (1/3) */}
-            <div className="md:col-span-1 space-y-2 flex flex-col items-center justify-center p-4 bg-[#25252b]/50 rounded-xl border border-neutral-800/50">
-                <label className="text-sm font-medium text-gray-400 w-full text-center mb-2">프로필 이미지</label>
-                <div className="w-40 h-40 bg-[#1c1c22] rounded-full border-2 border-dashed border-neutral-700 flex flex-col items-center justify-center text-gray-500 overflow-hidden relative group hover:border-[#03C3FF]/50 transition-colors">
-                {aboutData.profileImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={URL.createObjectURL(aboutData.profileImage)} alt="Preview" className="w-full h-full object-cover" />
-                ) : (
-                    <div className="flex flex-col items-center gap-2">
-                        <span className="text-3xl opacity-20">📷</span>
-                        <span className="text-xs opacity-50">No Image</span>
+            <div className="md:col-span-1 flex flex-col h-full space-y-2">
+                <label className="text-sm font-medium text-gray-400">프로필 이미지</label>
+                <div className="flex-grow flex flex-col items-center justify-center p-4 bg-[#25252b]/50 rounded-xl border border-neutral-800/50">
+                    <div className="w-full max-w-[200px] aspect-square bg-background rounded-full border-2 border-dashed border-neutral-700 flex flex-col items-center justify-center text-gray-500 overflow-hidden relative group hover:border-foreground/50 transition-colors">
+                    {aboutData.profileImage ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={URL.createObjectURL(aboutData.profileImage)} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                        <div className="flex flex-col items-center gap-2">
+                            <span className="text-3xl opacity-20">📷</span>
+                            <span className="text-xs opacity-50">No Image</span>
+                        </div>
+                    )}
+                    
+                    {/* Overlay Upload Button */}
+                    <label className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-full">
+                        <span className="text-white text-xs font-medium border border-white/30 px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors bg-black/50 backdrop-blur-sm">
+                            변경
+                        </span>
+                        <input
+                            type="file"
+                            onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                    setAboutData({ ...aboutData, profileImage: e.target.files[0] });
+                                }
+                            }}
+                            className="hidden"
+                            accept="image/*"
+                        />
+                    </label>
                     </div>
-                )}
-                
-                {/* Overlay Upload Button */}
-                <label className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-full">
-                    <span className="text-white text-xs font-medium border border-white/30 px-3 py-1.5 rounded-full hover:bg-white/10 transition-colors bg-black/50 backdrop-blur-sm">
-                        변경
-                    </span>
-                    <input
-                        type="file"
-                        onChange={(e) => {
-                            if (e.target.files && e.target.files[0]) {
-                                setAboutData({ ...aboutData, profileImage: e.target.files[0] });
-                            }
-                        }}
-                        className="hidden"
-                        accept="image/*"
-                    />
-                </label>
+                    <p className="text-[10px] text-center text-gray-500 mt-4">추천: 1:1 비율 (500x500px)</p>
                 </div>
-                <p className="text-[10px] text-center text-gray-500 mt-2">추천: 1:1 비율 (500x500px)</p>
             </div>
 
             {/* GitHub Nickname - Full Width below */}
@@ -186,7 +188,7 @@ export default function PortfolioManager() {
                 type="text"
                 value={aboutData.githubNickname}
                 onChange={(e) => setAboutData({ ...aboutData, githubNickname: e.target.value })}
-                className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#03C3FF] transition-all focus:ring-1 focus:ring-[#03C3FF]/20"
+                className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20"
                 placeholder="예: hyunzai"
                 />
             </div>
@@ -194,8 +196,8 @@ export default function PortfolioManager() {
       </section>
 
       {/* 3. Grouped History Section Card */}
-      <section className="bg-[#1c1c22] rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6 md:p-8">
-        <h3 className="text-xl font-semibold text-white mb-6 border-l-4 border-[#03C3FF] pl-4">연혁 (History) 설정</h3>
+      <section className="bg-background rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6 md:p-8">
+        <h3 className="text-xl font-semibold text-white mb-6 border-l-4 border-foreground pl-4">연혁 (History) 설정</h3>
         
         <div className="space-y-10">
             {HISTORY_TYPES.map((typeGroup) => {
@@ -213,7 +215,7 @@ export default function PortfolioManager() {
                             </div>
                             <button
                                 onClick={() => addHistory(typeGroup.value)}
-                                className="flex items-center gap-1.5 text-xs bg-[#25252b] hover:bg-[#03C3FF] hover:text-black border border-neutral-800 hover:border-[#03C3FF] text-gray-400 px-3 py-1.5 rounded-full transition-all"
+                                className="flex items-center gap-1.5 text-xs bg-[#25252b] hover:bg-foreground hover:text-black border border-neutral-800 hover:border-foreground text-gray-400 px-3 py-1.5 rounded-full transition-all"
                             >
                                 <FaPlus size={10} />
                                 <span>추가</span>
@@ -223,10 +225,10 @@ export default function PortfolioManager() {
                          <div className="grid grid-cols-1 gap-4">
                             {groupHistories.length > 0 ? (
                                 groupHistories.map((history) => (
-                                    <div key={history.id} className="bg-[#25252b] border border-neutral-800/50 rounded-xl p-6 relative group hover:border-[#03C3FF]/30 transition-all hover:shadow-lg hover:shadow-black/50">
+                                    <div key={history.id} className="bg-[#25252b] border border-neutral-800/50 rounded-xl p-6 relative group hover:border-foreground/30 transition-all hover:shadow-lg hover:shadow-black/50">
                                         <button
                                             onClick={() => setHistories(histories.filter(h => h.id !== history.id))}
-                                            className="absolute top-4 right-4 text-neutral-600 hover:text-red-400 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all p-2 bg-[#1c1c22] border border-neutral-800 rounded-lg hover:border-red-400/30"
+                                            className="absolute top-4 right-4 text-neutral-600 hover:text-red-400 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all p-2 bg-background border border-neutral-800 rounded-lg hover:border-red-400/30"
                                             title="삭제"
                                         >
                                             <FaTrash size={12} />
@@ -248,7 +250,7 @@ export default function PortfolioManager() {
                                                     }}
                                                 >
                                                     <div className="relative">
-                                                        <ListboxButton className="relative w-full cursor-pointer bg-[#1c1c22] border border-neutral-800 rounded px-3 py-2 text-left text-sm text-gray-300 focus:outline-none focus:border-[#03C3FF] hover:bg-[#32323a] transition-colors">
+                                                        <ListboxButton className="relative w-full cursor-pointer bg-background border border-neutral-800 rounded px-3 py-2 text-left text-sm text-gray-300 focus:outline-none focus:border-foreground hover:bg-[#32323a] transition-colors">
                                                             <span className="block truncate text-xs">
                                                                 {HISTORY_TYPES.find(t => t.value === history.type)?.label}
                                                             </span>
@@ -268,7 +270,7 @@ export default function PortfolioManager() {
                                                                         key={option.value}
                                                                         className={({ active }: { active: boolean }) =>
                                                                             `relative cursor-default select-none py-2 pl-3 pr-9 ${
-                                                                                active ? 'bg-[#03C3FF]/10 text-[#03C3FF]' : 'text-gray-300'
+                                                                                active ? 'bg-foreground/10 text-foreground' : 'text-gray-300'
                                                                             }`
                                                                         }
                                                                         value={option.value}
@@ -279,7 +281,7 @@ export default function PortfolioManager() {
                                                                                     {option.label}
                                                                                 </span>
                                                                                 {selected ? (
-                                                                                    <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#03C3FF]">
+                                                                                    <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-foreground">
                                                                                         <FaCheck className="h-2 w-2" aria-hidden="true" />
                                                                                     </span>
                                                                                 ) : null}
@@ -304,7 +306,7 @@ export default function PortfolioManager() {
                                                         newHistories[index].title = e.target.value;
                                                         setHistories(newHistories);
                                                     }}
-                                                    className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#03C3FF] placeholder-gray-600"
+                                                    className="w-full bg-background border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-foreground placeholder-gray-600"
                                                     placeholder="학교명, 회사명, 프로젝트명"
                                                 />
                                             </div>
@@ -320,7 +322,7 @@ export default function PortfolioManager() {
                                                             newHistories[index].startDate = e.target.value;
                                                             setHistories(newHistories);
                                                         }}
-                                                        className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#03C3FF] placeholder-gray-600"
+                                                        className="w-full bg-background border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-foreground placeholder-gray-600"
                                                         placeholder="시작일 (YYYY.MM)"
                                                     />
                                                     <span className="text-gray-500">~</span>
@@ -333,7 +335,7 @@ export default function PortfolioManager() {
                                                             newHistories[index].endDate = e.target.value;
                                                             setHistories(newHistories);
                                                         }}
-                                                        className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#03C3FF] placeholder-gray-600"
+                                                        className="w-full bg-background border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-foreground placeholder-gray-600"
                                                         placeholder="종료일/Present"
                                                     />
                                                 </div>
@@ -349,7 +351,7 @@ export default function PortfolioManager() {
                                                         newHistories[index].order = parseInt(e.target.value) || 0;
                                                         setHistories(newHistories);
                                                     }}
-                                                    className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#03C3FF]"
+                                                    className="w-full bg-background border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-foreground"
                                                 />
                                             </div>
                                         </div>
@@ -363,7 +365,7 @@ export default function PortfolioManager() {
                                                     newHistories[index].description = e.target.value;
                                                     setHistories(newHistories);
                                                 }}
-                                                className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#03C3FF] resize-none h-16 placeholder-gray-600"
+                                                className="w-full bg-background border border-neutral-800 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-foreground resize-none h-16 placeholder-gray-600"
                                                 placeholder="주요 내용을 간단히 입력하세요"
                                             />
                                         </div>
@@ -384,15 +386,15 @@ export default function PortfolioManager() {
       {/* 4. Awards & Certifications - Two Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Awards Card */}
-        <section className="bg-[#1c1c22] rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6">
+        <section className="bg-background rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6">
             <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-white border-l-4 border-[#03C3FF] pl-4">수상이력 (Awards)</h3>
+                <h3 className="text-xl font-semibold text-white border-l-4 border-foreground pl-4">수상이력 (Awards)</h3>
                 <button
                     onClick={() => {
                         const newId = crypto.randomUUID();
                         setAwards([...awards, { id: newId, title: '', organization: '', date: '', description: '', order: awards.length + 1 }]);
                     }}
-                    className="flex items-center gap-1.5 text-xs bg-[#25252b] hover:bg-[#03C3FF] hover:text-black border border-neutral-700 hover:border-[#03C3FF] text-gray-300 px-3 py-1.5 rounded-full transition-all"
+                    className="flex items-center gap-1.5 text-xs bg-[#25252b] hover:bg-foreground hover:text-black border border-neutral-700 hover:border-foreground text-gray-300 px-3 py-1.5 rounded-full transition-all"
                 >
                     <FaPlus size={10} />
                     <span>추가</span>
@@ -401,10 +403,10 @@ export default function PortfolioManager() {
             <div className="space-y-4">
                 {awards.length > 0 ? (
                     awards.map((award, index) => (
-                        <div key={award.id} className="bg-[#25252b] border border-neutral-800/50 rounded-xl p-5 relative group hover:border-[#03C3FF]/30 transition-colors">
+                        <div key={award.id} className="bg-[#25252b] border border-neutral-800/50 rounded-xl p-5 relative group hover:border-foreground/30 transition-colors">
                             <button
                                 onClick={() => setAwards(awards.filter(a => a.id !== award.id))}
-                                className="absolute top-3 right-3 text-neutral-600 hover:text-red-400 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all p-1.5 bg-[#1c1c22] border border-neutral-800 rounded-lg hover:border-red-400/30"
+                                className="absolute top-3 right-3 text-neutral-600 hover:text-red-400 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all p-1.5 bg-background border border-neutral-800 rounded-lg hover:border-red-400/30"
                                 title="삭제"
                             >
                                 <FaTrash size={10} />
@@ -421,7 +423,7 @@ export default function PortfolioManager() {
                                             newAwards[index].title = e.target.value;
                                             setAwards(newAwards);
                                         }}
-                                        className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#03C3FF]"
+                                        className="w-full bg-background border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-foreground"
                                         placeholder="예: 금상"
                                     />
                                 </div>
@@ -436,7 +438,7 @@ export default function PortfolioManager() {
                                                 newAwards[index].organization = e.target.value;
                                                 setAwards(newAwards);
                                             }}
-                                            className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#03C3FF]"
+                                            className="w-full bg-background border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-foreground"
                                             placeholder="기관명"
                                         />
                                     </div>
@@ -450,7 +452,7 @@ export default function PortfolioManager() {
                                                 newAwards[index].date = e.target.value;
                                                 setAwards(newAwards);
                                             }}
-                                            className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#03C3FF]"
+                                            className="w-full bg-background border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-foreground"
                                             placeholder="YYYY.MM.DD"
                                         />
                                     </div>
@@ -465,7 +467,7 @@ export default function PortfolioManager() {
                                         newAwards[index].description = e.target.value;
                                         setAwards(newAwards);
                                     }}
-                                    className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#03C3FF] resize-none h-14 text-xs"
+                                    className="w-full bg-background border border-neutral-800 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-foreground resize-none h-14 text-xs"
                                     placeholder="설명"
                                 />
                             </div>
@@ -480,15 +482,15 @@ export default function PortfolioManager() {
         </section>
 
         {/* Certifications Card */}
-        <section className="bg-[#1c1c22] rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6">
+        <section className="bg-background rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6">
              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-white border-l-4 border-[#03C3FF] pl-4">자격증 (Certifications)</h3>
+                <h3 className="text-xl font-semibold text-white border-l-4 border-foreground pl-4">자격증 (Certifications)</h3>
                 <button
                     onClick={() => {
                         const newId = crypto.randomUUID();
                         setCertifications([...certifications, { id: newId, title: '', organization: '', date: '', description: '', order: certifications.length + 1 }]);
                     }}
-                    className="flex items-center gap-1.5 text-xs bg-[#25252b] hover:bg-[#03C3FF] hover:text-black border border-neutral-700 hover:border-[#03C3FF] text-gray-300 px-3 py-1.5 rounded-full transition-all"
+                    className="flex items-center gap-1.5 text-xs bg-[#25252b] hover:bg-foreground hover:text-black border border-neutral-700 hover:border-foreground text-gray-300 px-3 py-1.5 rounded-full transition-all"
                 >
                     <FaPlus size={10} />
                     <span>추가</span>
@@ -497,10 +499,10 @@ export default function PortfolioManager() {
             <div className="space-y-4">
                 {certifications.length > 0 ? (
                     certifications.map((cert, index) => (
-                        <div key={cert.id} className="bg-[#25252b] border border-neutral-800/50 rounded-xl p-5 relative group hover:border-[#03C3FF]/30 transition-colors">
+                        <div key={cert.id} className="bg-[#25252b] border border-neutral-800/50 rounded-xl p-5 relative group hover:border-foreground/30 transition-colors">
                             <button
                                 onClick={() => setCertifications(certifications.filter(c => c.id !== cert.id))}
-                                className="absolute top-3 right-3 text-neutral-600 hover:text-red-400 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all p-1.5 bg-[#1c1c22] border border-neutral-800 rounded-lg hover:border-red-400/30"
+                                className="absolute top-3 right-3 text-neutral-600 hover:text-red-400 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all p-1.5 bg-background border border-neutral-800 rounded-lg hover:border-red-400/30"
                                 title="삭제"
                             >
                                 <FaTrash size={10} />
@@ -517,7 +519,7 @@ export default function PortfolioManager() {
                                             newCerts[index].title = e.target.value;
                                             setCertifications(newCerts);
                                         }}
-                                        className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#03C3FF]"
+                                        className="w-full bg-background border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-foreground"
                                         placeholder="예: 정보처리기사"
                                     />
                                 </div>
@@ -532,7 +534,7 @@ export default function PortfolioManager() {
                                                 newCerts[index].organization = e.target.value;
                                                 setCertifications(newCerts);
                                             }}
-                                            className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#03C3FF]"
+                                            className="w-full bg-background border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-foreground"
                                             placeholder="기관명"
                                         />
                                     </div>
@@ -546,7 +548,7 @@ export default function PortfolioManager() {
                                                 newCerts[index].date = e.target.value;
                                                 setCertifications(newCerts);
                                             }}
-                                            className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#03C3FF]"
+                                            className="w-full bg-background border border-neutral-800 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-foreground"
                                             placeholder="YYYY.MM.DD"
                                         />
                                     </div>
@@ -561,7 +563,7 @@ export default function PortfolioManager() {
                                         newCerts[index].description = e.target.value;
                                         setCertifications(newCerts);
                                     }}
-                                    className="w-full bg-[#1c1c22] border border-neutral-800 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#03C3FF] resize-none h-14 text-xs"
+                                    className="w-full bg-background border border-neutral-800 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-foreground resize-none h-14 text-xs"
                                     placeholder="설명"
                                 />
                             </div>
@@ -578,7 +580,7 @@ export default function PortfolioManager() {
 
       {/* Floating Save Button */}
       <div className="fixed bottom-6 right-6 z-50">
-        <button className="flex items-center gap-2 bg-[#03C3FF] hover:bg-[#03C3FF]/90 text-black font-bold px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(3,195,255,0.3)] border-2 border-white/10 backdrop-blur-sm">
+        <button className="flex items-center gap-2 bg-foreground hover:bg-foreground/90 text-black font-bold px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(3,195,255,0.3)] border-2 border-white/10 backdrop-blur-sm">
           <FaSave size={18} />
           <span>변경사항 저장</span>
         </button>

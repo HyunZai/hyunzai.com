@@ -127,10 +127,10 @@ export default function GuestbookModal({ isOpen, onClose }: GuestbookModalProps)
             `}</style>
 
             <div
-              className="bg-[#1C1C22]/95 border border-white/10 w-full max-w-4xl h-[80vh] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm md:text-base relative backdrop-blur-md"
+              className="bg-background/95 border border-white/10 w-full max-w-4xl h-[80vh] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm md:text-base relative backdrop-blur-md"
             >
               {/* Header */}
-              <div className="h-10 bg-[#1C1C22] flex items-center px-4 border-b border-white/10 shrink-0 relative">
+              <div className="h-10 bg-background flex items-center px-4 border-b border-white/10 shrink-0 relative">
                 <div className="flex gap-2 items-center">
                   <div className="relative">
                     <span className="block w-3 h-3 rounded-full bg-foreground" />
@@ -207,10 +207,10 @@ export default function GuestbookModal({ isOpen, onClose }: GuestbookModalProps)
               </div>
 
               {/* Footer (Fixed Input) */}
-              <div className="p-4 bg-[#1C1C22] border-t border-white/10 shrink-0 font-mono text-sm md:text-base">
+              <div className="p-4 bg-background border-t border-white/10 shrink-0 font-mono text-sm md:text-base">
                 <form onSubmit={handleSubmit} className="flex items-center gap-x-2">
                   {/* Prompt Section */}
-                  <div className="flex items-center gap-1 shrink-0 bg-[#1C1C22] z-10">
+                  <div className="flex items-center gap-1 shrink-0 bg-background z-10">
                     <div className="flex items-center">
                       <input
                         type="text"

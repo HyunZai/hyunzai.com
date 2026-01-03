@@ -57,7 +57,7 @@ export default function InquiryList({ initialInquiries }: { initialInquiries: In
                 {new Date(inquiry.createdAt).toLocaleString()}
               </td>
               <td className="py-4 px-6 text-sm text-gray-200 whitespace-nowrap font-medium">{inquiry.name}</td>
-              <td className="py-4 px-6 text-sm text-[#03C3FF] whitespace-nowrap">
+              <td className="py-4 px-6 text-sm text-foreground whitespace-nowrap">
                 <a href={`mailto:${inquiry.email}`} className="hover:underline opacity-80 hover:opacity-100 transition-opacity">{inquiry.email}</a>
               </td>
               <td className="py-4 px-6 text-sm text-gray-400 max-w-xs truncate" title={inquiry.message}>
@@ -68,13 +68,13 @@ export default function InquiryList({ initialInquiries }: { initialInquiries: In
                   onClick={() => handleToggleStatus(inquiry.id, inquiry.isResponded)}
                   className={`
                     w-12 h-7 rounded-full p-1 cursor-pointer transition-colors duration-300 ease-in-out mx-auto flex items-center relative
-                    ${inquiry.isResponded ? 'bg-[#03C3FF]/20 border border-[#03C3FF]' : 'bg-neutral-800 border border-neutral-700'}
+                    ${inquiry.isResponded ? 'bg-foreground/20 border border-foreground' : 'bg-neutral-800 border border-neutral-700'}
                   `}
                 >
                   <div 
                     className={`
                       w-4 h-4 rounded-full shadow-md transform transition-all duration-300 ease-in-out absolute
-                      ${inquiry.isResponded ? 'translate-x-[17px] bg-[#03C3FF]' : 'translate-x-0.3 bg-gray-500'}
+                      ${inquiry.isResponded ? 'translate-x-[17px] bg-foreground' : 'translate-x-0.3 bg-gray-500'}
                     `}
                   />
                 </div>

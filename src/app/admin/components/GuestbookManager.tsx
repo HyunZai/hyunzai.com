@@ -37,7 +37,7 @@ export default function GuestbookManager({ initialEntries }: { initialEntries: G
               <td className="py-4 px-6 text-xs text-gray-500 whitespace-nowrap" suppressHydrationWarning>
                 {new Date(entry.createdAt).toLocaleString()}
               </td>
-              <td className="py-4 px-6 text-sm text-[#03C3FF] whitespace-nowrap font-medium">
+              <td className="py-4 px-6 text-sm text-foreground whitespace-nowrap font-medium">
                 {entry.nickname}
               </td>
               <td className="py-4 px-6 text-sm text-gray-300 max-w-xs truncate" title={entry.content}>

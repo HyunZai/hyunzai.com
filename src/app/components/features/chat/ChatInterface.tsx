@@ -149,7 +149,7 @@ const ChatInterface = () => {
                             onClick={(e) => e.stopPropagation()} 
                         >
                             <motion.div
-                                className="relative h-[90vh] bg-[#1c1c22] border-l border-white/10 overflow-hidden flex flex-col shadow-2xl rounded-2xl w-full md:w-auto"
+                                className="relative h-[90vh] bg-background border-l border-white/10 overflow-hidden flex flex-col shadow-2xl rounded-2xl w-full md:w-auto"
                                 style={{ width: typeof window !== 'undefined' && window.innerWidth >= 768 ? width : '100%' }}
                                 initial={{ x: "100%", opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
@@ -294,7 +294,7 @@ const ChatInterface = () => {
                                 </div>
 
                                 {/* Input Area */}
-                                <div className="p-6 border-t border-white/10 bg-[#1c1c22]">
+                                <div className="p-6 border-t border-white/10 bg-background">
                                     <div className="relative w-full group">
                                         <input
                                             type="text"
