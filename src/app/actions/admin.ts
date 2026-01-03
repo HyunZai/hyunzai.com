@@ -1,6 +1,6 @@
 "use server";
 
-import { AppDataSource, initializeDataSource } from "@/lib/typeorm";
+import { getRepository } from "@/lib/data-source";
 import { InquiryEntity } from "@/entities/InquiryEntity";
 import { GuestbookEntity } from "@/entities/GuestbookEntity";
 
@@ -9,8 +9,7 @@ import { InquiryDto } from "@/dtos/InquiryDto";
 import { GuestbookDto } from "@/dtos/GuestbookDto";
 
 export async function getInquiries() {
-  await initializeDataSource();
-  const inquiryRepo = AppDataSource.getRepository(InquiryEntity);
+  const inquiryRepo = await getRepository(InquiryEntity);
   const inquiries = await inquiryRepo.find({
     order: { createdAt: "DESC" },
   });
@@ -24,8 +23,7 @@ export async function getInquiries() {
 
 export async function deleteInquiry(id: number) {
   try {
-    await initializeDataSource();
-    const inquiryRepo = AppDataSource.getRepository(InquiryEntity);
+    const inquiryRepo = await getRepository(InquiryEntity);
     await inquiryRepo.delete(id);
     return { success: true };
   } catch (error) {
@@ -35,8 +33,7 @@ export async function deleteInquiry(id: number) {
 }
 
 export async function getGuestbookEntries() {
-  await initializeDataSource();
-  const guestbookRepo = AppDataSource.getRepository(GuestbookEntity);
+  const guestbookRepo = await getRepository(GuestbookEntity);
   const entries = await guestbookRepo.find({
     order: { createdAt: "DESC" },
   });
@@ -50,8 +47,7 @@ export async function getGuestbookEntries() {
 
 export async function deleteGuestbookEntry(id: string) {
   try {
-    await initializeDataSource();
-    const guestbookRepo = AppDataSource.getRepository(GuestbookEntity);
+    const guestbookRepo = await getRepository(GuestbookEntity);
     await guestbookRepo.delete(id);
     return { success: true };
   } catch (error) {
@@ -62,8 +58,7 @@ export async function deleteGuestbookEntry(id: string) {
 
 export async function toggleInquiryStatus(id: number, isResponded: boolean) {
   try {
-    await initializeDataSource();
-    const inquiryRepo = AppDataSource.getRepository(InquiryEntity);
+    const inquiryRepo = await getRepository(InquiryEntity);
     await inquiryRepo.update(id, { isResponded });
     return { success: true };
   } catch (error) {

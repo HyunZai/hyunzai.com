@@ -1,4 +1,4 @@
-import { AppDataSource } from "@/lib/data-source";
+import { getRepository } from "@/lib/data-source";
 import { UserEntity } from "@/entities/UserEntity";
 import { PersonalInfoEntity } from "@/entities/PersonalInfoEntity";
 import { MilestoneEntity } from "@/entities/MilestoneEntity";
@@ -14,27 +14,28 @@ import { ProjectDto } from "@/dtos/ProjectDto";
 import { PortfolioData } from "@/dtos/PortfolioData";
 
 export async function getPortfolioData(): Promise<PortfolioData> {
-  if (!AppDataSource.isInitialized) {
-    await AppDataSource.initialize();
-  }
-  const repo = AppDataSource;
+  const userRepo = await getRepository(UserEntity);
+  const infoRepo = await getRepository(PersonalInfoEntity);
+  const milestoneRepo = await getRepository(MilestoneEntity);
+  const careerRepo = await getRepository(CareerEntity);
+  const projectRepo = await getRepository(ProjectEntity);
+  const attachmentRepo = await getRepository(AttachmentEntity);
+
   const userId = 1;
 
   // 데이터 병렬 조회
   const [user, personalInfos, allMilestones, careersWithProjects, projects] =
     await Promise.all([
-      repo.getRepository(UserEntity).findOne({ where: { id: 1 } }),
-      repo.getRepository(PersonalInfoEntity).find({ where: { userId } }),
-      repo
-        .getRepository(MilestoneEntity)
-        .find({ where: { userId }, order: { displayOrder: "ASC" } }),
-      repo.getRepository(CareerEntity).find({
+      userRepo.findOne({ where: { id: 1 } }),
+      infoRepo.find({ where: { userId } }),
+      milestoneRepo.find({ where: { userId }, order: { displayOrder: "ASC" } }),
+      careerRepo.find({
         where: { userId },
         relations: ["careerProjects"], // career_projects 테이블 Join
         order: { startDate: "DESC" },
       }),
 
-      repo.getRepository(ProjectEntity).find({
+      projectRepo.find({
         where: { userId, hiddenAt: IsNull() },
         order: { displayOrder: "ASC" },
       }),
@@ -51,7 +52,7 @@ export async function getPortfolioData(): Promise<PortfolioData> {
       : []),
   ];
 
-  const allAttachments = await repo.getRepository(AttachmentEntity).find({
+  const allAttachments = await attachmentRepo.find({
     where: attachmentWhere,
     order: { displayOrder: "ASC", id: "ASC" },
   });
