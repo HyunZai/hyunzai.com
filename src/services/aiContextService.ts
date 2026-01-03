@@ -1,4 +1,4 @@
-import { AppDataSource } from "@/lib/data-source";
+import { getRepository } from "@/lib/data-source";
 import { UserEntity } from "@/entities/UserEntity";
 import { PersonalInfoEntity } from "@/entities/PersonalInfoEntity";
 import { CareerEntity } from "@/entities/CareerEntity";
@@ -7,27 +7,28 @@ import { MilestoneEntity } from "@/entities/MilestoneEntity";
 import { IsNull } from "typeorm";
 
 export async function getAIContextData(): Promise<string> {
-  if (!AppDataSource.isInitialized) {
-    await AppDataSource.initialize();
-  }
-  const repo = AppDataSource;
+  const userRepo = await getRepository(UserEntity);
+  const infoRepo = await getRepository(PersonalInfoEntity);
+  const careerRepo = await getRepository(CareerEntity);
+  const projectRepo = await getRepository(ProjectEntity);
+  const milestoneRepo = await getRepository(MilestoneEntity);
   const userId = 1;
 
   // 1. 모든 데이터 병렬 조회
   const [user, personalInfos, careers, projects, milestones] =
     await Promise.all([
-      repo.getRepository(UserEntity).findOne({ where: { id: userId } }),
-      repo.getRepository(PersonalInfoEntity).find({ where: { userId } }),
-      repo.getRepository(CareerEntity).find({
+      userRepo.findOne({ where: { id: userId } }),
+      infoRepo.find({ where: { userId } }),
+      careerRepo.find({
         where: { userId },
         relations: ["careerProjects"],
         order: { startDate: "DESC" },
       }),
-      repo.getRepository(ProjectEntity).find({
+      projectRepo.find({
         where: { userId, hiddenAt: IsNull() },
         order: { displayOrder: "ASC" },
       }),
-      repo.getRepository(MilestoneEntity).find({
+      milestoneRepo.find({
         where: { userId },
         order: { startDate: "DESC" },
       }),
