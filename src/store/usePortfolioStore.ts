@@ -17,7 +17,6 @@ export const usePortfolioStore = create<PortfolioState>((set) => ({
     try {
       const response = await fetch("/api/portfolio");
       const data = await response.json();
-      console.log(data);
       set({ store: data, isLoading: false });
     } catch (error) {
       console.error("Failed to fetch portfolio data:", error);

@@ -46,12 +46,28 @@ const ibmPlexSansKR = localFont({
 
 export const metadata: Metadata = {
   title: "Hyunjae's Personal Website",
-  description: "Hyunjae's Personal Website",
-
+  description: "Software Engineer Hyunjae's Portfolio - Web Development, AI, and more.",
+  openGraph: {
+    title: "Hyunjae's Personal Website",
+    description: "Welcome to Hyunjae's Portfolio. Explore my projects, career, and skills.",
+    url: "https://hyunzai.com",
+    siteName: "Hyunjae's Portfolio",
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hyunjae's Personal Website",
+    description: "Software Engineer Hyunjae's Portfolio",
+  },
   viewport: {
     width: "device-width",
     initialScale: 1,
     maximumScale: 1,
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

@@ -10,6 +10,8 @@ import { AttachmentEntity } from "../entities/AttachmentEntity";
 import { CareerProjectEntity } from "../entities/CareerProjectEntity";
 import { GuestbookEntity } from "../entities/GuestbookEntity";
 
+const isDevelopment = process.env.NODE_ENV !== "production";
+
 export const AppDataSource = new DataSource({
   type: "mysql",
   host: process.env.DB_HOST || "localhost",
@@ -17,8 +19,8 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME || "root",
   password: process.env.DB_PASSWORD || "1234",
   database: process.env.DB_DATABASE || "hyunzai_db",
-  synchronize: true, // 개발 환경에서만 true로 설정 (메이저 변경 시 데이터 유실 주의)
-  logging: false,
+  synchronize: isDevelopment, // 개발 환경에서만 true (운영 환경 데이터 보호)
+  logging: isDevelopment, // 개발 환경에서만 로그 출력
   entities: [
     UserEntity,
     CareerEntity,
@@ -30,6 +32,16 @@ export const AppDataSource = new DataSource({
     CareerProjectEntity,
     GuestbookEntity,
   ],
-  migrations: [],
   subscribers: [],
 });
+
+export const getRepository = async <
+  Entity extends import("typeorm").ObjectLiteral
+>(
+  entity: import("typeorm").EntityTarget<Entity>
+): Promise<import("typeorm").Repository<Entity>> => {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
+  return AppDataSource.getRepository(entity);
+};

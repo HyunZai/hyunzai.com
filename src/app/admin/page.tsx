@@ -2,6 +2,8 @@ import React from 'react';
 import { getInquiries, getGuestbookEntries } from '@/app/actions/admin';
 import AdminDashboard from './components/AdminDashboard';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPage() {
   const [inquiries, guestbookEntries] = await Promise.all([
     getInquiries(),
