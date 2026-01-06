@@ -459,11 +459,10 @@ export default function PortfolioManager() {
             />
         </div>
 
-        {/* Grouped History Section (Moved Inside About) */}
+        {/* Grouped Milestones Section (Moved Inside About) */}
         <div className="border-t border-neutral-800 pt-8">
-            <h4 className="text-lg font-medium text-white mb-6">연혁 (History)</h4>
             <div className="flex items-center justify-between mb-6">
-                <h4 className="text-xl font-medium text-white">History List</h4>
+                <h4 className="text-lg font-medium text-white">마일스톤 (Milestones)</h4>
                 <button
                     onClick={() => addHistory('work')}
                     className="flex items-center gap-1.5 text-xs bg-[#25252b] hover:bg-foreground hover:text-black border border-neutral-700 hover:border-foreground text-gray-300 px-3 py-1.5 rounded-full transition-all"
@@ -639,7 +638,7 @@ export default function PortfolioManager() {
                     ))
                 ) : (
                     <div className="text-center py-6 border border-dashed border-neutral-800 rounded-xl text-gray-600 text-sm">
-                        등록된 히스토리가 없습니다.
+                        등록된 마일스톤이 없습니다.
                     </div>
                 )}
             </div>
@@ -654,7 +653,7 @@ export default function PortfolioManager() {
         {/* Companies List */}
         <div className="mb-10">
           <div className="flex items-center justify-between mb-6">
-            <h4 className="text-xl font-medium text-white">Companies</h4>
+            <h4 className="text-lg font-medium text-white">회사 (Companies)</h4>
             <button
                onClick={() => {
                    const newId = crypto.randomUUID();
@@ -786,7 +785,7 @@ export default function PortfolioManager() {
         {/* Projects List */}
         <div className="border-t border-neutral-800 pt-8">
             <div className="flex items-center justify-between mb-6">
-                <h4 className="text-xl font-medium text-white">Projects</h4>
+                <h4 className="text-lg font-medium text-white">프로젝트 (Projects)</h4>
                 <button
                     onClick={() => {
                         const newId = crypto.randomUUID();
@@ -975,10 +974,8 @@ export default function PortfolioManager() {
 
       {/* 4. Personal Projects Section Card */}
       <section className="bg-background rounded-2xl border border-neutral-800 overflow-hidden shadow-xl p-6 md:p-8">
-        <h3 className="text-3xl font-semibold text-white mb-6 border-l-4 border-foreground pl-4">Personal Projects</h3>
-        
         <div className="flex items-center justify-between mb-6">
-            <h4 className="text-xl font-medium text-white">Projects List</h4>
+            <h3 className="text-3xl font-semibold text-white border-l-4 border-foreground pl-4">Personal Projects</h3>
             <button
                 onClick={() => {
                     const newId = crypto.randomUUID();
