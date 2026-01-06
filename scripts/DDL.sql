@@ -1,3 +1,5 @@
+use hyunzai_db;
+
 #DROP TABLE IF EXISTS attachments;
 #DROP TABLE IF EXISTS milestones;
 #DROP TABLE IF EXISTS guestbooks;
@@ -29,7 +31,7 @@ CREATE TABLE IF NOT EXISTS users (
 ) COMMENT = '사용자 정보 통합 관리 테이블';
 
 INSERT INTO hyunzai_db.users (name_ko,name_en,sub_title_ko,sub_title_en,email,git_username,gender,birth_date,address,created_at,updated_at) VALUES
-	 ('김현재','Hyunjae Kim','저는 <span className=''text-foreground''>효율을 추구하고 도전을 망설이지 않는 개발자</span>입니다.','I''m a <span className=''text-foreground''>developer who values efficiency end embraces new challenges</span>.','contact@hyunzai.com','HyunZai','M','1998-03-09','대한민국 서울시','2025-12-20 21:08:11.601131','2025-12-21 17:48:56.039976');
+	 ('김현재','Hyunjae Kim','이게 보인다면 <span className=''text-foreground''>로컬</span>이랍니다.','I''m a <span className=''text-foreground''>developer who values efficiency end embraces new challenges</span>.','contact@hyunzai.com','HyunZai','M','1998-03-09','대한민국 서울시','2025-12-20 21:08:11.601131','2025-12-21 17:48:56.039976');
 
 	
 -- ===================================================
