@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiCheckCircle, FiXCircle } from "react-icons/fi";
+import { FiCheckCircle, FiXCircle, FiHelpCircle } from "react-icons/fi";
 
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   message: string;
-  type?: "success" | "error";
+  type?: "success" | "error" | "confirm";
+  onConfirm?: () => void;
 }
 
 export default function AlertModal({
@@ -17,6 +18,7 @@ export default function AlertModal({
   title,
   message,
   type = "success",
+  onConfirm,
 }: AlertModalProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -74,13 +76,17 @@ export default function AlertModal({
                 className={`mb-4 md:mb-6 rounded-full flex items-center justify-center ${
                   type === "success"
                     ? "text-green-500"
-                    : "text-red-500"
+                    : type === "error"
+                    ? "text-red-500"
+                    : "text-yellow-500"
                 }`}
               >
                 {type === "success" ? (
                   <FiCheckCircle className="w-16 h-16 md:w-20 md:h-20" style={{ strokeWidth: 1.5 }} />
-                ) : (
+                ) : type === "error" ? (
                   <FiXCircle className="w-16 h-16 md:w-20 md:h-20" style={{ strokeWidth: 1.5 }} />
+                ) : (
+                  <FiHelpCircle className="w-16 h-16 md:w-20 md:h-20" style={{ strokeWidth: 1.5 }} />
                 )}
               </div>
 
@@ -92,13 +98,37 @@ export default function AlertModal({
                 {message}
               </p>
 
-              {/* Action Button */}
-              <button
-                onClick={onClose}
-                className="w-full py-2.5 md:py-3 bg-foreground text-background font-medium rounded-lg hover:opacity-90 transition-opacity text-sm md:text-base"
-              >
-                확인
-              </button>
+              {/* Action Buttons */}
+              <div className="flex gap-3 w-full">
+                {onConfirm ? (
+                    <>
+                        <button
+                            onClick={onClose}
+                            className="flex-1 py-2.5 md:py-3 bg-neutral-700 text-white font-medium rounded-lg hover:bg-neutral-600 transition-colors text-sm md:text-base"
+                        >
+                            취소 (No)
+                        </button>
+                        <button
+                            onClick={() => {
+                                onConfirm();
+                                // onClose is usually properly handled by parent after confirm or inside confirm, 
+                                // but for safety if parent doesn't close, we might want to?
+                                // User code in PortfolioManager calls setAlertModal(..., isOpen: false).
+                            }}
+                            className="flex-1 py-2.5 md:py-3 bg-foreground text-background font-medium rounded-lg hover:opacity-90 transition-opacity text-sm md:text-base"
+                        >
+                            확인 (Yes)
+                        </button>
+                    </>
+                ) : (
+                    <button
+                        onClick={onClose}
+                        className="w-full py-2.5 md:py-3 bg-foreground text-background font-medium rounded-lg hover:opacity-90 transition-opacity text-sm md:text-base"
+                    >
+                        확인
+                    </button>
+                )}
+              </div>
             </div>
           </motion.div>
         </div>
