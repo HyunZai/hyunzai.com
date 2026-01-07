@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { FaPlus, FaTrash, FaSave, FaChevronDown, FaCheck, FaBriefcase, FaGraduationCap, FaProjectDiagram, FaEllipsisH, FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption, Transition, Switch } from '@headlessui/react';
+import { Reorder } from 'framer-motion';
+import AlertModal from '@/app/components/ui/AlertModal';
 
 interface Award {
   id: string;
@@ -64,6 +66,7 @@ interface Project {
   endDate: string;
   displayOrder: number;
   hiddenAt: string | null;
+  images: string[];
 }
 
 const HISTORY_TYPES = [
@@ -110,6 +113,17 @@ export default function PortfolioManager() {
       order: histories.filter(h => h.type === type).length + 1 
     }]);
   };
+
+
+    const [alertModal, setAlertModal] = useState<{
+        isOpen: boolean;
+        projectId: string | null;
+        onConfirm: () => void;
+    }>({
+        isOpen: false,
+        projectId: null,
+        onConfirm: () => {},
+    });
 
   const handleSave = async () => {
     try {
@@ -989,7 +1003,8 @@ export default function PortfolioManager() {
                         startDate: '',
                         endDate: '',
                         displayOrder: projects.length + 1,
-                        hiddenAt: null
+                        hiddenAt: null,
+                        images: []
                     }]);
                 }}
                 className="flex items-center gap-1.5 text-xs bg-[#25252b] hover:bg-foreground hover:text-black border border-neutral-700 hover:border-foreground text-gray-300 px-3 py-1.5 rounded-full transition-all"
@@ -1003,13 +1018,57 @@ export default function PortfolioManager() {
             {projects.length > 0 ? (
                 projects.map((project) => (
                     <div key={project.id} className="bg-[#25252b] border border-neutral-800/50 rounded-xl p-6 relative group hover:border-foreground/30 transition-all hover:shadow-lg hover:shadow-black/50">
-                        <button
-                            onClick={() => setProjects(projects.filter(p => p.id !== project.id))}
-                            className="absolute top-4 right-4 text-neutral-600 hover:text-red-400 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all p-2 bg-background border border-neutral-800 rounded-lg hover:border-red-400/30"
-                            title="삭제"
-                        >
-                            <FaTrash size={12} />
-                        </button>
+                        <div className="flex items-center justify-between mb-6 relative">
+                            {/* Visibility Toggle (Top Left) */}
+                            <div className="flex items-center gap-3">
+                                <span className={`text-xs font-bold tracking-wide uppercase text-neutral-500`}>
+                                    비공개 여부
+                                </span>
+                                <Switch
+                                    checked={!!project.hiddenAt}
+                                    onChange={(checked: boolean) => {
+                                        // Checked = Hidden (hiddenAt: Date)
+                                        // Unchecked = Visible (hiddenAt: null)
+
+                                        // If turning ON (Hidden), show alert
+                                        if (checked) {
+                                            setAlertModal({
+                                                isOpen: true,
+                                                projectId: String(project.id),
+                                                onConfirm: () => {
+                                                    const newProjects = projects.map(p => p.id === project.id ? { ...p, hiddenAt: new Date().toISOString() } : p);
+                                                    setProjects(newProjects);
+                                                    setAlertModal(prev => ({ ...prev, isOpen: false }));
+                                                }
+                                            });
+                                        } else {
+                                            // Turning OFF (Visible)
+                                            const newProjects = projects.map(p => p.id === project.id ? { ...p, hiddenAt: null } : p);
+                                            setProjects(newProjects);
+                                        }
+                                    }}
+                                    className={`${
+                                        !!project.hiddenAt ? 'bg-foreground' : 'bg-neutral-700'
+                                    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-black border border-neutral-600`}
+                                >
+                                    <span className="sr-only">비공개 설정</span>
+                                    <span
+                                        className={`${
+                                            !!project.hiddenAt ? 'translate-x-6' : 'translate-x-0.5'
+                                        } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                                    />
+                                </Switch>
+                            </div>
+
+                            {/* Delete Button (Top Right) */}
+                            <button
+                                onClick={() => setProjects(projects.filter(p => p.id !== project.id))}
+                                className="absolute -top-2 -right-2 md:top-0 md:right-0 text-neutral-600 hover:text-red-400 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all p-2 bg-background border border-neutral-800 rounded-lg hover:border-red-400/30 shadow-sm"
+                                title="삭제"
+                            >
+                                <FaTrash size={12} />
+                            </button>
+                        </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                              {/* Title */}
@@ -1134,31 +1193,107 @@ export default function PortfolioManager() {
                             />
                         </div>
 
-                        {/* Hidden Toggle (Bottom Right) */}
-                        <div className="flex justify-end pt-2 mt-2 border-t border-neutral-800/50">
-                            <div className="flex items-center gap-3">
-                                <span className="text-xs text-gray-500 font-medium tracking-wide uppercase">
-                                    {project.hiddenAt ? '비공개 (Hidden)' : '공개 (Visible)'}
-                                </span>
-                                <Switch
-                                    checked={!!project.hiddenAt}
-                                    onChange={(checked: boolean) => {
-                                        const newProjects = projects.map(p => p.id === project.id ? { ...p, hiddenAt: checked ? new Date().toISOString() : null } : p);
-                                        setProjects(newProjects);
-                                    }}
-                                    className={`${
-                                        project.hiddenAt ? 'bg-foreground' : 'bg-neutral-700'
-                                    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-black border border-neutral-600`}
-                                >
-                                    <span className="sr-only">숨김 설정</span>
-                                    <span
-                                        className={`${
-                                            project.hiddenAt ? 'translate-x-6' : 'translate-x-1'
-                                        } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+
+
+                         {/* Screenshot Manager */}
+                         <div className="mt-4 border-t border-neutral-800 pt-4">
+                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">프로젝트 스크린샷 (순서 변경 가능)</label>
+                            
+                            <div className="flex flex-wrap gap-4">
+                                {/* Preview List (Reorder Group) */}
+                                {project.images && project.images.length > 0 && (
+                                    <Reorder.Group 
+                                        axis="x" 
+                                        values={project.images} 
+                                        onReorder={(newOrder) => {
+                                            const newProjects = projects.map(p => 
+                                                p.id === project.id ? { ...p, images: newOrder } : p
+                                            );
+                                            setProjects(newProjects);
+                                        }}
+                                        className="flex gap-4 flex-wrap"
+                                    >
+                                        {project.images.map((imgUrl) => (
+                                            <Reorder.Item key={imgUrl} value={imgUrl} className="relative group shrink-0 cursor-grab active:cursor-grabbing">
+                                                <div className="w-[160px] aspect-video rounded-lg overflow-hidden border border-neutral-800 relative bg-black/50 hover:border-foreground/50 transition-colors">
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                    <img src={imgUrl} alt="Screenshot" className="w-full h-full object-cover" />
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            const newProjects = projects.map(p => {
+                                                                if(p.id === project.id) {
+                                                                    return {
+                                                                        ...p,
+                                                                        images: p.images.filter(img => img !== imgUrl)
+                                                                    }
+                                                                }
+                                                                return p;
+                                                            });
+                                                            setProjects(newProjects);
+                                                        }}
+                                                        className="absolute top-1 right-1 bg-black/70 hover:bg-red-500 text-white rounded-md p-1 opacity-0 group-hover:opacity-100 transition-all"
+                                                    >
+                                                        <FaTrash size={10} />
+                                                    </button>
+                                                    <div className="absolute bottom-1 left-2 text-[10px] bg-black/50 px-1.5 py-0.5 rounded text-white/70 pointer-events-none">
+                                                        {project.images.indexOf(imgUrl) + 1}
+                                                    </div>
+                                                </div>
+                                            </Reorder.Item>
+                                        ))}
+                                    </Reorder.Group>
+                                )}
+
+                                {/* Add Button (Card Style) */}
+                                <label className="w-[160px] aspect-video rounded-lg border border-dashed border-neutral-700 hover:border-foreground bg-[#25252b] hover:bg-neutral-800 transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group/add shrink-0">
+                                    <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center transition-colors">
+                                        <FaPlus size={12} className="text-gray-400 group-hover/add:text-foreground" />
+                                    </div>
+                                    <span className="text-[10px] text-gray-500 group-hover/add:text-gray-300 font-medium tracking-wide">이미지 추가</span>
+                                    <input 
+                                        type="file" 
+                                        className="hidden" 
+                                        multiple 
+                                        accept="image/*"
+                                        onChange={async (e) => {
+                                            if (e.target.files && e.target.files.length > 0) {
+                                                const files = Array.from(e.target.files);
+                                                // Optimistic UI or Loading state?
+                                                // For now, standard upload
+                                                const formData = new FormData();
+                                                files.forEach(file => {
+                                                    formData.append('file', file);
+                                                });
+                                                
+                                                try {
+                                                    const res = await fetch('/api/upload', {
+                                                        method: 'POST',
+                                                        body: formData
+                                                    });
+                                                    const data = await res.json();
+                                                    if(data.success) {
+                                                        const newProjects = projects.map(p => {
+                                                            if (p.id === project.id) {
+                                                                return { 
+                                                                    ...p, 
+                                                                    images: [...(p.images || []), ...data.urls] 
+                                                                };
+                                                            }
+                                                            return p;
+                                                        });
+                                                        setProjects(newProjects);
+                                                    }
+                                                } catch (err) {
+                                                    console.error("Upload failed", err);
+                                                    alert("이미지 업로드 실패");
+                                                }
+                                            }
+                                        }}
                                     />
-                                </Switch>
+                                </label>
                             </div>
-                        </div>
+                         </div>
                     </div>
                 ))
             ) : (
@@ -1179,6 +1314,15 @@ export default function PortfolioManager() {
           <span>변경사항 저장</span>
         </button>
       </div>
+
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal(prev => ({ ...prev, isOpen: false }))}
+        title="프로젝트 숨김 확인"
+        message="프로젝트 정보는 유지되지만 사용자들에게 노출되지 않습니다.\n프로젝트를 숨길까요?"
+        type="confirm"
+        onConfirm={alertModal.onConfirm}
+      />
     </div>
   );
 }
