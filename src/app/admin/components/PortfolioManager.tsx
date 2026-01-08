@@ -174,7 +174,7 @@ export default function PortfolioManager() {
                     value={introData.nameKr}
                     onChange={(e) => setIntroData({ ...introData, nameKr: e.target.value })}
                     className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20"
-                    placeholder="예: 김현재"
+                    placeholder="예: 홍길동"
                     />
                 </div>
                 <div className="space-y-2">
@@ -184,7 +184,7 @@ export default function PortfolioManager() {
                     value={introData.nameEn}
                     onChange={(e) => setIntroData({ ...introData, nameEn: e.target.value })}
                     className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20"
-                    placeholder="예: HyunZai Kim"
+                    placeholder="예: Gildong Hong"
                     />
                 </div>
             </div>
@@ -469,7 +469,7 @@ export default function PortfolioManager() {
             value={aboutData.githubNickname}
             onChange={(e) => setAboutData({ ...aboutData, githubNickname: e.target.value })}
             className="w-full bg-[#25252b] border border-neutral-700/50 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-foreground transition-all focus:ring-1 focus:ring-foreground/20"
-            placeholder="예: hyunzai"
+            placeholder="예: gildong"
             />
         </div>
 
