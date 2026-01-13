@@ -32,10 +32,18 @@ export default function Intro() {
         />
 
         <h2 className="text-xl md:text-3xl font-extrabold mb-4 animate-fadeIn text-left mt-2 md:mt-4">
-          <HoverText
-            defaultContent={user.subTitleKo}
-            hoverContent={user.subTitleEn}
-          />
+          <span className="md:hidden">
+            <HoverText
+              defaultContent="저는 <span className='text-foreground'>결국 해내는 개발자</span>입니다"
+              hoverContent="I'm a developer <span className='text-foreground'>who makes it happen</span>"
+            />
+          </span>
+          <span className="hidden md:block">
+            <HoverText
+              defaultContent={user.subTitleKo}
+              hoverContent={user.subTitleEn}
+            />
+          </span>
         </h2>
 
         <p className="text-sm md:text-lg font-light animate-slideInUp delay-500 text-left leading-relaxed">

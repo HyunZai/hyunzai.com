@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS users (
 ) COMMENT = '사용자 정보 통합 관리 테이블';
 
 INSERT INTO hyunzai_db.users (name_ko,name_en,sub_title_ko,sub_title_en,email,git_username,gender,birth_date,address,created_at,updated_at) VALUES
-	 ('김현재','Hyunjae Kim','이게 보인다면 <span className=''text-foreground''>로컬</span>이랍니다.','I''m a <span className=''text-foreground''>developer who values efficiency end embraces new challenges</span>.','contact@hyunzai.com','HyunZai','M','1998-03-09','대한민국 서울시','2025-12-20 21:08:11.601131','2025-12-21 17:48:56.039976');
+	 ('김현재','Hyunjae Kim','저는 <span className=''text-foreground''>효율을 추구하고 도전을 망설이지 않는</span> 개발자입니다.','I''m an <span className=''text-foreground''>efficiency-driven</span> developer who <span className=''text-foreground''>embraces new challenges</span>.','contact@hyunzai.com','HyunZai','M','1998-03-09','대한민국 서울시','2025-12-20 21:08:11.601131','2025-12-21 17:48:56.039976');
 
 	
 -- ===================================================
@@ -191,9 +191,11 @@ INSERT INTO hyunzai_db.milestones (`type`,title,start_date,end_date,organization
 	 ('EDUCATION','서일대학교 입학','2023-03-01',NULL,'서일대학교','소프트웨어공학',4,1,'2025-12-20 21:08:11.699656','2025-12-21 20:10:06.537978'),
 	 ('SERVICE','육군 15사단 군복무','2018-03-05','2019-11-03','육군 15사단 50연대 2대대','대대탄약병 만기제대',6,1,'2025-12-20 21:08:11.699656','2025-12-21 20:12:21.118212'),
 	 ('EDUCATION','서일대학교 졸업','2026-02-10',NULL,'서일대학교','소프트웨어공학 전문학사 (GPA: 4.46 / 4.5)',1,1,'2025-12-21 20:04:07.557208','2025-12-21 20:04:07.557208'),
-	 ('SERVICE','SOLIBT 인턴십','2025-03-01','2025-08-31','SOLBIT','- Node.js / React 기반의 Kiosk Backoffice Web Application 개발 및 유지보수 - Spring / JSP 기반의 대학 e-IRB System Web Application 개발 및 유지보수',2,1,'2025-12-21 20:08:29.675825','2025-12-21 20:08:29.675825'),
+	 ('SERVICE','SOLIBT 인턴십','2025-03-01','2025-08-31','SOLBIT','- Node.js / React 기반의 Kiosk Backoffice Web Application 개발 및 유지보수
+- Spring / JSP 기반의 대학 e-IRB System Web Application 개발 및 유지보수',2,1,'2025-12-21 20:08:29.675825','2025-12-21 20:08:29.675825'),
 	 ('EDUCATION','전공동아리 W.I.S','2023-04-01','2025-02-28','서일대학교','팀프로젝트 진행 및 캡스톤디자인 경진대회 출전',3,1,'2025-12-21 20:10:06.536001','2025-12-21 20:10:06.536001'),
-	 ('SERVICE','M&J SOFT 근무','2020-05-01','2023-02-28','M&J SOFT','- .NET Winforms 기반의 Desktop Application 개발 - ASP.NET Core 기반의 EMS Web Application 개발',5,1,'2025-12-21 20:12:21.115740','2025-12-21 20:12:21.115740');
+	 ('SERVICE','M&J SOFT 근무','2020-05-01','2023-02-28','M&J SOFT','- .NET Winforms 기반의 Desktop Application 개발
+- ASP.NET Core 기반의 EMS Web Application 개발',5,1,'2025-12-21 20:12:21.115740','2025-12-21 20:12:21.115740');
 
 
 -- ===================================================

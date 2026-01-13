@@ -4,6 +4,8 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { usePortfolioStore } from "@/store/usePortfolioStore";
 import { MilestoneDto } from "@/dtos/MilestoneDto";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function Timeline() {
   const lineRef = useRef<HTMLDivElement>(null);
@@ -94,7 +96,25 @@ function TimelineItem({ event }: { event: MilestoneDto }) {
         {/* Card (Title & Description) */}
         <div className="flex-1 w-full p-6 bg-background rounded-xl border border-gray-700 group-hover:border-foreground/50 transition-all duration-300 text-left group-hover:bg-background/80 group-hover:backdrop-blur-md group-hover:shadow-[0_0_20px_rgba(3,195,255,0.1)]">
           <h4 className="text-xl font-bold text-white mb-2">{event.title}</h4>
-          <p className="text-gray-300 leading-relaxed">{event.description}</p>
+          <div className="text-gray-300 leading-relaxed">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]}
+              components={{
+                p: ({children}) => <p className="mb-2 last:mb-0">{children}</p>,
+                ul: ({children}) => <ul className="list-disc pl-4 mb-2 space-y-1">{children}</ul>,
+                ol: ({children}) => <ol className="list-decimal pl-4 mb-2 space-y-1">{children}</ol>,
+                li: ({children}) => <li className="pl-1">{children}</li>,
+                h1: ({children}) => <h1 className="text-xl font-bold mb-2 mt-4">{children}</h1>,
+                h2: ({children}) => <h2 className="text-lg font-bold mb-2 mt-3">{children}</h2>,
+                h3: ({children}) => <h3 className="text-base font-bold mb-1 mt-2">{children}</h3>,
+                a: ({children, href}) => <a href={href} className="text-blue-400 hover:text-blue-300 underline" target="_blank" rel="noopener noreferrer">{children}</a>,
+                blockquote: ({children}) => <blockquote className="border-l-4 border-gray-600 pl-4 italic my-2 text-gray-400">{children}</blockquote>,
+                code: ({children}) => <code className="bg-gray-800 px-1 py-0.5 rounded text-sm font-mono text-gray-200">{children}</code>
+              }}
+            >
+              {event.description}
+            </ReactMarkdown>
+          </div>
         </div>
       </div>
     </div>
